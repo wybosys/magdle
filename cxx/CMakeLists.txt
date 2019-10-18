@@ -3,4 +3,4 @@ project(cxx)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(cxx SHARED magdle.cpp magdle.h)
+add_library(cxx SHARED magdle.cpp magdle.h storage.cpp similar.h similar.cpp similar_ocv.cpp)
