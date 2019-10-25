@@ -14,6 +14,17 @@ d_ptr = new private_class_type();
 #define ME_CLASS_DESTORY \
 delete d_ptr;
 
+#define ME_SINGLETON_DECL(cls) \
+public: static cls& shared();
+#define ME_SINGLETON_IMPL(cls) \
+static cls* _shared = nullptr; \
+cls& cls::shared() { \
+if (_shared == nullptr) { \
+_shared = new cls(); \
+} \
+return *_shared; \
+}
+
 ME_NAMESPACE_BEGIN
 
 ME_NAMESPACE_END

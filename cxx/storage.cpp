@@ -24,13 +24,6 @@ Storage::~Storage() {
     ME_CLASS_DESTORY
 }
 
-Storage* _shared = nullptr;
-
-Storage& Storage::shared() {
-    if (_shared == nullptr) {
-        _shared = new Storage();
-    }
-    return *_shared;
-}
+ME_SINGLETON_IMPL(Storage)
 
 ME_NAMESPACE_END
