@@ -1,7 +1,6 @@
 #include "magdle.h"
 #include "dataset_images.h"
 #include <c++/9/regex>
-#include <c++/9/iostream>
 
 ME_NAMESPACE_BEGIN
 
@@ -20,8 +19,7 @@ void DataSetImages::load(path_type const& directory) {
             continue;
 
         // 判断是否是支持的图片
-        cout << iter.path() << endl;
-        if (!regex_match(iter.path().string(), PAT_IMAGES, regex_constants::match_any))
+        if (!regex_search(StringT::ToLowerCase(iter.path().string()), PAT_IMAGES))
             continue;
 
         auto t = new DataSetImageItem();

@@ -21,6 +21,14 @@ private:
     ::std::ostringstream _oss;
 };
 
+struct StringT {
+
+    inline static ::std::string ToLowerCase(::std::string str) {
+        ::std::transform(str.begin(), str.end(), str.begin(), tolower);
+        return str;
+    }
+};
+
 ME_NAMESPACE_END
 
 #endif

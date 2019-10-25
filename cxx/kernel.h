@@ -34,13 +34,14 @@ return *_shared; \
 
 #include <c++/9/string>
 #include <c++/9/filesystem>
+#include <c++/9/algorithm>
 #include "stringt.h"
 
 ME_NAMESPACE_BEGIN
 
-using namespace std;
+using namespace ::std;
 
-typedef filesystem::path path_type;
+typedef ::std::filesystem::path path_type;
 
 ME_NAMESPACE_END
 
