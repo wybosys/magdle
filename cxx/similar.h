@@ -8,6 +8,7 @@ ME_NAMESPACE_BEGIN
 ME_CLASS_PREPARE(Similar)
 
 interface ISimilar {
+    virtual ~ISimilar() = default;
 
     // 更新图片基础数据
     virtual void update(DataSetImages const&) = 0;
@@ -19,7 +20,7 @@ class Similar : public Project, public ISimilar {
 public:
 
     explicit Similar(Magdle &env);
-    ~Similar();
+    ~Similar() override;
 
     void update(DataSetImages const&) override;
 };

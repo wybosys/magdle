@@ -6,7 +6,7 @@ ME_NAMESPACE_BEGIN
 
 static const regex PAT_IMAGES("\\.(png|jpg|jpeg)$");
 
-DataSetImages::DataSetImages(Magdle &)
+DataSetImages::DataSetImages(Magdle& env)
 : DataSet(env)
 {
 
