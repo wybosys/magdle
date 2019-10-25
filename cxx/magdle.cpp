@@ -1,3 +1,4 @@
+#include "kernel.h"
 #include "magdle.h"
 
 #include <iostream>

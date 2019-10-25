@@ -1,6 +1,3 @@
-#ifndef _MAGDLE_H
-#define _MAGDLE_H
-
-void hello();
-
-#endif
+#include "kernel.h"
+#include "similar.h"
+#include "storage.h"
