@@ -3,8 +3,21 @@
 
 ME_NAMESPACE_BEGIN
 
+ME_CLASS_PREPARE(Config)
+
 class Config {
-    ME_SINGLETON_DECL(Config)
+    ME_CLASS_DECL(Config)
+
+public:
+
+    // 工作目录
+    string workDirectory;
+
+    // 临时目录
+    string tmpDirectory;
+
+protected:
+    void init();
 };
 
 ME_NAMESPACE_END

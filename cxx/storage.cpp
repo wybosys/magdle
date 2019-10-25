@@ -1,11 +1,11 @@
-#include "kernel.h"
-#include "storage.h"
+#include "magdle.h"
 #include <unqlite.h>
 
 ME_NAMESPACE_BEGIN
 
 struct StoragePrivate {
-    StoragePrivate() {
+    StoragePrivate(Magdle& env)
+    :env(env) {
 
     }
 
@@ -13,17 +13,16 @@ struct StoragePrivate {
         unqlite_close(db);
     }
 
-    unqlite *db;
+    unqlite *db = nullptr;
+    Magdle& env;
 };
 
-Storage::Storage() {
-    ME_CLASS_CONSTRUCT
+Storage::Storage(Magdle& env) {
+    ME_CLASS_CONSTRUCT(env)
 }
 
 Storage::~Storage() {
-    ME_CLASS_DESTORY
+    ME_CLASS_DESTORY()
 }
-
-ME_SINGLETON_IMPL(Storage)
 
 ME_NAMESPACE_END

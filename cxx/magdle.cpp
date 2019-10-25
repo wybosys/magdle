@@ -1,8 +1,18 @@
-#include "kernel.h"
 #include "magdle.h"
 
-#include <iostream>
+ME_NAMESPACE_BEGIN
 
-void hello() {
-    std::cout << "Hello, World!" << std::endl;
+Magdle::Magdle()
+: storage(*this) {
+
 }
+
+Magdle::~Magdle() {
+
+}
+
+void Magdle::init() {
+    config.init();
+}
+
+ME_NAMESPACE_END

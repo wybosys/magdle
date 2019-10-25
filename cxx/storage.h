@@ -7,10 +7,9 @@ ME_CLASS_PREPARE(Storage)
 
 class Storage {
     ME_CLASS_DECL(Storage)
-    ME_SINGLETON_DECL(Storage)
 
 protected:
-    Storage();
+    Storage(Magdle&);
     ~Storage();
 };
 
