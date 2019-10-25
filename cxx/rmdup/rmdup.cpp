@@ -13,6 +13,7 @@ int main() {
 
     DataSetImages images(env);
     images.load(env.config.datasetDirectory);
+    prj.update(images);
 
     return 0;
 }

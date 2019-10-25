@@ -9,10 +9,13 @@ class Storage {
     ME_CLASS_DECL(Storage)
 
 protected:
-    Storage(Magdle&);
+    explicit Storage(Magdle&);
     ~Storage();
 
     void init();
+
+public:
+
 };
 
 ME_NAMESPACE_END

@@ -8,7 +8,10 @@ ME_NAMESPACE_BEGIN
 class SimilarOcv: public ISimilar
 {
 public:
-    SimilarOcv(Magdle&);
+    explicit SimilarOcv(Magdle&);
+
+    void update(DataSetImages const&) override;
+    void updateOne(DataSetImageItem const&);
 
 private:
     Magdle& env;

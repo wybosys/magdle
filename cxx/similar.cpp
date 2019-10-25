@@ -29,5 +29,9 @@ Similar::~Similar() {
     ME_CLASS_DESTORY()
 }
 
+void Similar::update(DataSetImages const& ds) {
+    d_ptr->impl->update(ds);
+}
+
 ME_NAMESPACE_END
 
