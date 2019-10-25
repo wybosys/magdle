@@ -14,6 +14,7 @@ add_library(magdle
         kernel.h kernel.cpp
         config.cpp config.h
         logger.cpp logger.h
+        dataset.cpp dataset.h
         )
 
 include_directories(./)

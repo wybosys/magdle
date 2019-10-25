@@ -3,7 +3,9 @@
 ME_NAMESPACE_BEGIN
 
 Magdle::Magdle()
-: storage(*this) {
+: config(*this),
+storage(*this)
+{
 
 }
 

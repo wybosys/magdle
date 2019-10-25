@@ -1,0 +1,8 @@
+#ifndef _ME_DATASET_H
+#define _ME_DATASET_H
+
+ME_NAMESPACE_BEGIN
+
+ME_NAMESPACE_END
+
+#endif

@@ -7,7 +7,9 @@ class Logger
 {
 public:
 
+    void info(string const& msg);
     void log(string const& msg);
+    void fatal(string const& msg);
 };
 
 ME_NAMESPACE_END
