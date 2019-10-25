@@ -1,12 +1,18 @@
 #include "magdle.h"
 #include "similar.h"
+#include "dataset_images.h"
 
 int main() {
-    magle::Magdle env;
+    using namespace magle;
+
+    Magdle env;
     env.config.datasetDirectory = "../../dataset";
     env.init();
 
-    magle::Similar prj(env);
+    Similar prj(env);
+
+    DataSetImages images;
+    images.load(env.config.datasetDirectory);
 
     return 0;
 }

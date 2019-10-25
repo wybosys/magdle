@@ -5,20 +5,18 @@ ME_NAMESPACE_BEGIN
 
 ME_CLASS_PREPARE(Similar)
 
-interface ISimilar
-{
+interface ISimilar {
 
 };
 
-class Similar: public Project, public ISimilar
-{
+class Similar : public Project, public ISimilar {
     ME_CLASS_DECL(Similar)
 
 public:
 
-    explicit Similar(Magdle& env);
-    ~Similar();
+    explicit Similar(Magdle &env);
 
+    ~Similar();
 };
 
 ME_NAMESPACE_END
