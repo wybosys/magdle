@@ -10,6 +10,15 @@ struct StoragePrivate {
     }
 
     ~StoragePrivate() {
+        close();
+    }
+
+    void open() {
+        string dbph = env.config.workDirectory.string() + "/db";
+        unqlite_open(&db, dbph.c_str(), UNQLITE_OPEN_CREATE);
+    }
+
+    void close() {
         unqlite_close(db);
     }
 
@@ -23,6 +32,11 @@ Storage::Storage(Magdle& env) {
 
 Storage::~Storage() {
     ME_CLASS_DESTORY()
+}
+
+void Storage::init() {
+    d_ptr->close();
+    d_ptr->open();
 }
 
 ME_NAMESPACE_END

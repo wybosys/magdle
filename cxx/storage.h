@@ -11,6 +11,8 @@ class Storage {
 protected:
     Storage(Magdle&);
     ~Storage();
+
+    void init();
 };
 
 ME_NAMESPACE_END
