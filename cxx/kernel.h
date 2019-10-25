@@ -13,7 +13,7 @@ class Magdle;
 class cls##Private;
 #define ME_CLASS_DECL(cls) \
 private: typedef cls##Private private_class_type; \
-private_class_type *d_ptr; \
+private_class_type *d_ptr = nullptr; \
 friend class Magdle;
 
 #define ME_CLASS_CONSTRUCT(...) \
@@ -38,6 +38,8 @@ return *_shared; \
 ME_NAMESPACE_BEGIN
 
 using namespace std;
+
+typedef filesystem::path path_type;
 
 ME_NAMESPACE_END
 

@@ -10,14 +10,21 @@ class Config {
 
 public:
 
+    explicit Config(Magdle&);
+
     // 工作目录
-    filesystem::path workDirectory;
+    path_type workDirectory;
 
     // 临时目录
-    filesystem::path tmpDirectory;
+    path_type tmpDirectory;
+
+    // 数据集目录
+    path_type datasetDirectory;
 
 protected:
     void init();
+
+    Magdle& env;
 };
 
 ME_NAMESPACE_END

@@ -16,7 +16,7 @@ class Similar: public Project, public ISimilar
 
 public:
 
-    Similar(Magdle& env);
+    explicit Similar(Magdle& env);
     ~Similar();
 
 };
