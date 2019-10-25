@@ -13,6 +13,7 @@ add_library(magdle
         similar_ocv.cpp
         kernel.h kernel.cpp
         config.cpp config.h
+        logger.cpp logger.h
         )
 
 include_directories(./)
