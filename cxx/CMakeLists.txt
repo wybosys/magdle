@@ -9,6 +9,7 @@ add_library(magdle
         storage.cpp
         similar.h similar.cpp
         similar_ocv.cpp
+        kernel.h kernel.cpp
         )
 
 include_directories(./)
