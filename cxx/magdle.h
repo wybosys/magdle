@@ -23,6 +23,15 @@ public:
     Storage storage;
 };
 
+class Project
+{
+public:
+
+    Project(Magdle& env): env(env) {}
+
+    Magdle& env;
+};
+
 ME_NAMESPACE_END
 
 #endif

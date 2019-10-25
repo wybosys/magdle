@@ -1,6 +1,10 @@
 #ifndef _ME_KERNEL_H
 #define _ME_KERNEL_H
 
+#ifndef interface
+#define interface struct
+#endif
+
 #define ME_NAMESPACE_BEGIN namespace magle { \
 class Magdle;
 #define ME_NAMESPACE_END }

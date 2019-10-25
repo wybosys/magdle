@@ -1,5 +1,19 @@
-#ifndef _SIMILAR_OCV_H
-#define _SIMILAR_OCV_H
+#ifndef _ME_SIMILAR_OCV_H
+#define _ME_SIMILAR_OCV_H
+
+#include "similar.h"
+
+ME_NAMESPACE_BEGIN
+
+class SimilarOcv: public ISimilar
+{
+public:
+    SimilarOcv(Magdle&);
+
+private:
+    Magdle& env;
+};
+
+ME_NAMESPACE_END
 
 #endif
-
