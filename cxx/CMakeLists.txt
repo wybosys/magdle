@@ -16,6 +16,7 @@ add_library(magdle
         logger.cpp logger.h
         dataset.cpp dataset.h
         dataset_images.cpp dataset_images.h
+        stringt.h stringt.cpp
         )
 
 include_directories(./)

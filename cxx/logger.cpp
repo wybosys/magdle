@@ -1,6 +1,6 @@
 #include "magdle.h"
 #include "logger.h"
-#include <iostream>
+#include <c++/9/iostream>
 
 ME_NAMESPACE_BEGIN
 

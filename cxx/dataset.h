@@ -14,6 +14,8 @@ public:
     DataSet();
     ~DataSet();
 
+    typedef unique_ptr<DataSetItem> item_type;
+
     // 清空
     virtual void clear();
 };
