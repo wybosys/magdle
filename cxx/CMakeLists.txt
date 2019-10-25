@@ -15,4 +15,4 @@ include_directories(./)
 link_directories(./cmake-build-debug)
 
 add_executable(rmdup rmdup/rmdup.cpp)
-target_link_libraries(rmdup libmagdle)
+target_link_libraries(rmdup magdle)
