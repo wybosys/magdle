@@ -11,9 +11,8 @@ int main() {
 
     Similar prj(env);
 
-    DataSetImages images;
+    DataSetImages images(env);
     images.load(env.config.datasetDirectory);
-    env.logger.info(stringbuilder() << "获得" << images.images.size() << "图片");
 
     return 0;
 }

@@ -11,13 +11,17 @@ class DataSetItem
 class DataSet
 {
 public:
-    DataSet();
+    explicit DataSet(Magdle&);
     ~DataSet();
 
     typedef unique_ptr<DataSetItem> item_type;
 
     // 清空
     virtual void clear();
+
+protected:
+
+    Magdle& env;
 };
 
 ME_NAMESPACE_END

@@ -6,6 +6,12 @@ ME_NAMESPACE_BEGIN
 
 static const regex PAT_IMAGES("\\.(png|jpg|jpeg)$");
 
+DataSetImages::DataSetImages(Magdle &)
+: DataSet(env)
+{
+
+}
+
 void DataSetImages::clear() {
     images.clear();
 }
@@ -26,6 +32,8 @@ void DataSetImages::load(path_type const& directory) {
         t->url = iter.path();
         images.emplace_back(t);
     }
+
+    env.logger.info(stringbuilder() << "获得" << images.size() << "图片");
 }
 
 ME_NAMESPACE_END

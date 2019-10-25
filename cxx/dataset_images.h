@@ -19,6 +19,8 @@ class DataSetImages : public DataSet
 {
 public:
 
+    explicit DataSetImages(Magdle&);
+
     typedef unique_ptr<DataSetImageItem> item_type;
 
     void clear() override;

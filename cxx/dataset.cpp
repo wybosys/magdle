@@ -3,7 +3,8 @@
 
 ME_NAMESPACE_BEGIN
 
-DataSet::DataSet() {
+DataSet::DataSet(Magdle& env)
+: env(env) {
 
 }
 
