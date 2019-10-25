@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 project(cxx)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_COMPILER gcc-9)
+set(CMAKE_CXX_COMPILER g++-9)
 
 add_library(magdle
         SHARED
@@ -17,4 +19,4 @@ include_directories(./)
 link_directories(./cmake-build-debug)
 
 add_executable(rmdup rmdup/rmdup.cpp)
-target_link_libraries(rmdup magdle)
+target_link_libraries(rmdup magdle unqlite)

@@ -11,10 +11,10 @@ class Config {
 public:
 
     // 工作目录
-    string workDirectory;
+    filesystem::path workDirectory;
 
     // 临时目录
-    string tmpDirectory;
+    filesystem::path tmpDirectory;
 
 protected:
     void init();

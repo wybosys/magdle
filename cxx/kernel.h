@@ -28,7 +28,8 @@ _shared = new cls(); \
 return *_shared; \
 }
 
-#include <string>
+#include <c++/9/string>
+#include <c++/9/filesystem>
 
 ME_NAMESPACE_BEGIN
 
