@@ -1,6 +1,8 @@
 #ifndef _STORAGE_H
 #define _STORAGE_H
 
+#include "json.h"
+
 ME_NAMESPACE_BEGIN
 
 ME_CLASS_PREPARE(Storage)
@@ -17,7 +19,7 @@ protected:
 
 public:
 
-    // 根据key获得数据
+    bool insert(JsonObj const&);
 };
 
 ME_NAMESPACE_END
