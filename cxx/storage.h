@@ -12,10 +12,12 @@ protected:
     explicit Storage(Magdle&);
     ~Storage();
 
+    // 初始化数据库
     void init();
 
 public:
 
+    // 根据key获得数据
 };
 
 ME_NAMESPACE_END

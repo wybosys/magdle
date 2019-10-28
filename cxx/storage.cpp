@@ -1,5 +1,5 @@
 #include "magdle.h"
-#include <unqlite.h>
+#include <sqlite3.h>
 
 ME_NAMESPACE_BEGIN
 
@@ -15,14 +15,15 @@ struct StoragePrivate {
 
     void open() {
         string dbph = env.config.workDirectory.string() + "/db";
-        unqlite_open(&db, dbph.c_str(), UNQLITE_OPEN_CREATE);
+        sqlite3_open(dbph.c_str(), &db);
     }
 
     void close() {
-        unqlite_close(db);
+        sqlite3_close(db);
+        db = nullptr;
     }
 
-    unqlite *db = nullptr;
+    sqlite3 *db = nullptr;
     Magdle& env;
 };
 
