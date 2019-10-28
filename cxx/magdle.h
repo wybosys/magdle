@@ -5,6 +5,7 @@
 #include "config.h"
 #include "storage.h"
 #include "logger.h"
+#include "json.h"
 
 ME_NAMESPACE_BEGIN
 

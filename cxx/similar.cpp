@@ -6,13 +6,6 @@ ME_NAMESPACE_BEGIN
 
 struct SimilarPrivate
 {
-    SimilarPrivate() {
-    }
-
-    ~SimilarPrivate() {
-
-    }
-
     unique_ptr<ISimilar> impl;
 };
 
