@@ -43,12 +43,11 @@ void SimilarOcv::updateOne(const DataSetImageItem &item) {
     const double k = kb + kg + kr;
     multiply(img, vector<double>({k / (3 * kb), k / (3 * kg), k / (3 * kr)}), img);
 
-    // imwrite(env.config.tmpDirectory + "/" + item.url.filename(), img);
-    return;
-
     // 计算直方图
     Mat hist;
-    calcHist(img, vector<int>({0, 1, 2}), Mat(), hist, vector<int>({8, 8, 8}), vector<float>({0, 256, 0, 256, 0, 256}));
+    vector<Mat> channs;
+    split(img, channs);
+    calcHist(channs, vector<int>({0, 1, 2}), Mat(), hist, vector<int>({8, 8, 8}), vector<float>({0, 256, 0, 256, 0, 256}));
     normalize(hist, hist, 0, 255, NORM_MINMAX);
 
     // 自身比较作为基准
