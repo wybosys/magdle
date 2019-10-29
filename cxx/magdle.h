@@ -13,6 +13,7 @@ class Magdle {
 
 public:
     Magdle();
+
     ~Magdle();
 
     // 初始化
@@ -29,13 +30,25 @@ public:
 };
 
 // 用于实现包含的各种识别项目
-class Project
-{
+class Project {
 public:
 
-    Project(Magdle& env): env(env) {}
+    explicit Project(Magdle &, string const &);
 
-    Magdle& env;
+    // 清理
+    void clean();
+
+    // 项目名称
+    string name;
+
+    // 执行环境
+    Magdle &env;
+
+    // 当前的工作目录
+    path_type workDirectory;
+
+    // 当前的工作的临时目录
+    path_type tmpDirectory;
 };
 
 ME_NAMESPACE_END

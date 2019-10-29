@@ -4,14 +4,12 @@
 
 ME_NAMESPACE_BEGIN
 
-struct SimilarPrivate
-{
+struct SimilarPrivate {
     unique_ptr<ISimilar> impl;
 };
 
 Similar::Similar(magle::Magdle &env)
-: Project(env)
-{
+        : Project(env, "similar") {
     ME_CLASS_CONSTRUCT()
 
     // 根据运行环境选择使用的实现类
@@ -22,7 +20,7 @@ Similar::~Similar() {
     ME_CLASS_DESTORY()
 }
 
-void Similar::update(DataSetImages const& ds) {
+void Similar::update(DataSetImages const &ds) {
     d_ptr->impl->update(ds);
 }
 

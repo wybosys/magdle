@@ -35,6 +35,7 @@ return *_shared; \
 #include <c++/9/string>
 #include <c++/9/filesystem>
 #include <c++/9/algorithm>
+
 #include "stringt.h"
 
 ME_NAMESPACE_BEGIN

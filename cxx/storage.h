@@ -20,6 +20,7 @@ protected:
 public:
 
     bool insert(JsonObj const&);
+    vector<JsonObj> query(JsonObj const& filter);
 };
 
 ME_NAMESPACE_END

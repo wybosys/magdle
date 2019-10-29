@@ -11,18 +11,19 @@ interface ISimilar {
     virtual ~ISimilar() = default;
 
     // 更新图片基础数据
-    virtual void update(DataSetImages const&) = 0;
+    virtual void update(DataSetImages const &) = 0;
 };
 
 class Similar : public Project, public ISimilar {
-    ME_CLASS_DECL(Similar)
+ME_CLASS_DECL(Similar)
 
 public:
 
     explicit Similar(Magdle &env);
+
     ~Similar() override;
 
-    void update(DataSetImages const&) override;
+    void update(DataSetImages const &) override;
 };
 
 ME_NAMESPACE_END

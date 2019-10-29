@@ -10,6 +10,7 @@ int main() {
     env.init();
 
     Similar prj(env);
+    prj.clean();
 
     DataSetImages images(env);
     images.load(env.config.datasetDirectory);

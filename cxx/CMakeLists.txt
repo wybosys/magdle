@@ -21,5 +21,7 @@ add_library(magdle
 include_directories(./)
 link_directories(./cmake-build-debug)
 
+set(DEPENDS magdle sqlite3 jsoncpp opencv_core opencv_imgcodecs)
+
 add_executable(rmdup rmdup/rmdup.cpp)
-target_link_libraries(rmdup magdle sqlite3 jsoncpp)
+target_link_libraries(rmdup ${DEPENDS})

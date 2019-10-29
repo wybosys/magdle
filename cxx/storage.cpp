@@ -52,4 +52,9 @@ bool Storage::insert(JsonObj const& obj) {
     return SQLITE_OK == s;
 }
 
+vector<JsonObj> Storage::query(JsonObj const& filter) {
+    vector<JsonObj> r;
+    return r;
+}
+
 ME_NAMESPACE_END
