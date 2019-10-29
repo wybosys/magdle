@@ -10,6 +10,7 @@ class Magdle;
 #define ME_NAMESPACE_END }
 
 #define ME_CLASS_PREPARE(cls) \
+class cls; \
 class cls##Private;
 #define ME_CLASS_DECL(cls) \
 private: typedef cls##Private private_class_type; \
@@ -31,6 +32,8 @@ _shared = new cls(); \
 } \
 return *_shared; \
 }
+
+#define ME_FRIEND(cls) friend class cls;
 
 #include <c++/9/string>
 #include <c++/9/filesystem>

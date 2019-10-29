@@ -5,8 +5,8 @@ ME_NAMESPACE_BEGIN
 
 struct StoragePrivate {
 
-    explicit StoragePrivate(Magdle& env)
-    :env(env) {
+    explicit StoragePrivate(Magdle &env)
+            : env(env) {
 
     }
 
@@ -28,10 +28,24 @@ struct StoragePrivate {
     }
 
     sqlite3 *db = nullptr;
-    Magdle& env;
+    Magdle &env;
+
+    // 已经打开的集合
+    map<string, CollectionDocument> documents;
+    map<string, CollectionKeyValues> keyvalues;
 };
 
-Storage::Storage(Magdle& env) {
+CollectionDocument::CollectionDocument(Storage &s)
+        : storage(s) {
+
+}
+
+CollectionKeyValues::CollectionKeyValues(Storage &s)
+        : storage(s) {
+
+}
+
+Storage::Storage(Magdle &env) {
     ME_CLASS_CONSTRUCT(env)
 }
 
@@ -44,17 +58,35 @@ void Storage::init() {
     d_ptr->open();
 }
 
-bool Storage::insert(JsonObj const& obj) {
+bool Storage::insert(JsonObj const &obj) {
     string sql = "insert into _kv values('" + ToJson(obj) + "')";
-    char* err;
+    char *err;
     int s = sqlite3_exec(d_ptr->db, sql.c_str(), NULL, NULL, &err);
     sqlite3_free(err);
     return SQLITE_OK == s;
 }
 
-vector<JsonObj> Storage::query(JsonObj const& filter) {
+vector<JsonObj> Storage::query(JsonObj const &filter) {
     vector<JsonObj> r;
     return r;
+}
+
+CollectionDocument &Storage::document(const std::string &scheme) {
+    auto fnd = d_ptr->documents.find(scheme);
+    if (fnd != d_ptr->documents.end()) {
+        return fnd->second;
+    }
+    auto res = d_ptr->documents.insert(make_pair(scheme, CollectionDocument(*this)));
+    return res.first->second;
+}
+
+CollectionKeyValues &Storage::kv(const std::string &scheme) {
+    auto fnd = d_ptr->keyvalues.find(scheme);
+    if (fnd != d_ptr->keyvalues.end()) {
+        return fnd->second;
+    }
+    auto res = d_ptr->keyvalues.insert(make_pair(scheme, CollectionKeyValues(*this)));
+    return res.first->second;
 }
 
 ME_NAMESPACE_END
