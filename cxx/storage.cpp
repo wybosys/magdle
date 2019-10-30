@@ -6,6 +6,7 @@ ME_NAMESPACE_BEGIN
 #define DB storage.d_ptr->db
 #define EXEC storage.d_ptr->exec
 #define STORAGE storage.d_ptr
+#define ENV storage.env
 
 struct StoragePrivate {
 
@@ -37,6 +38,17 @@ struct StoragePrivate {
             return 0;
         }, &count, nullptr);
         return count == 1;
+    }
+
+    bool row_exists(string const &sql) {
+        int count;
+        stringbuilder ss;
+        ss << "select count(*) " << sql << " limit 1";
+        sqlite3_exec(db, ss, [](void *result, int ret, char **val, char **col) -> int {
+            *((int *) result) = atoi(*val);
+            return 0;
+        }, &count, nullptr);
+        return count > 0;
     }
 
     bool exec(string const &sql) {
@@ -83,12 +95,19 @@ CollectionKeyValues::CollectionKeyValues(Storage &s, string const &scheme)
 
 bool CollectionKeyValues::set(std::string const &key, magle::Variant const &val) {
     stringbuilder ss;
-    ss << "replace into " << scheme << " (key, val, typ) values (?, ?, ?)";
+    ss << "from " << scheme << " where key='" << key << "'";
+    if (STORAGE->row_exists(ss)) {
+        ss.clear() << "update " << scheme << " set key=?,val=?,typ=? where key='" << key << "'";
+    } else {
+        ss.clear() << "insert into " << scheme << " values (?, ?, ?)";
+    }
 
     sqlite::Stmt s;
     int t = sqlite3_prepare(DB, ss, ss.length(), s, nullptr);
-    if (t != SQLITE_OK)
+    if (t != SQLITE_OK) {
+        ENV.logger.warn(ss);
         return false;
+    }
 
     sqlite3_bind_text(s, 1, key.c_str(), key.length(), SQLITE_STATIC);
     sqlite3_bind_blob(s, 2, val.buffer(), val.length(), SQLITE_STATIC);
@@ -136,7 +155,7 @@ Variant CollectionKeyValues::get(std::string const &key) {
     return Variant(raw, len, (VariantType) typ);
 }
 
-Storage::Storage(Magdle &env) {
+Storage::Storage(Magdle &env) : env(env) {
     ME_CLASS_CONSTRUCT(env)
 }
 

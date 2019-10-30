@@ -63,6 +63,8 @@ protected:
     // 初始化数据库
     void init();
 
+    Magdle& env;
+
 public:
 
     // 获得文档数据

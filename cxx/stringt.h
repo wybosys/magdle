@@ -5,9 +5,12 @@ ME_NAMESPACE_BEGIN
 
 class stringbuilder {
 public:
+    explicit stringbuilder(string const &sep = "")
+            : _sep(sep) {}
+
     template<typename T>
     inline stringbuilder &operator<<(T const &v) {
-        _oss << v;
+        _oss << v << _sep;
         _changed = true;
         return *this;
     }
@@ -32,9 +35,17 @@ public:
         return string().length();
     }
 
+    inline stringbuilder &clear() {
+        _changed = true;
+        _str = "";
+        _oss.str("");
+        return *this;
+    }
+
 private:
     mutable bool _changed = false;
     mutable ::std::string _str;
+    ::std::string _sep;
     ostringstream _oss;
 };
 
