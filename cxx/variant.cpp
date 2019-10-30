@@ -4,23 +4,33 @@
 
 ME_NAMESPACE_BEGIN
 
-Variant::Variant(int v)
-        : type(VariantType::INTEGER),
-          length(sizeof(long)) {
-    raw = malloc(length);
-    (*(long *) raw) = v;
+Variant::Variant() {
+    // pass
 }
 
-Variant::Variant(std::string const &str)
+Variant::Variant(int v)
+        : type(VariantType::INTEGER),
+          _length(sizeof(long)) {
+    _raw = malloc(_length);
+    (*(long *) _raw) = v;
+}
+
+Variant::Variant(string const &str)
         : type(VariantType::STRING),
-          length(str.length()) {
-    raw = malloc(length);
-    memcpy(raw, str.c_str(), length);
+          _length(str.length()) {
+    _raw = malloc(_length);
+    memcpy(_raw, str.c_str(), _length);
+}
+
+Variant::Variant(void const *p, size_t s) :
+        _length(s) {
+    _raw = malloc(_length);
+    memcpy(_raw, p, _length);
 }
 
 Variant::~Variant() {
-    free(raw);
-    raw = nullptr;
+    free(_raw);
+    _raw = nullptr;
 }
 
 ME_NAMESPACE_END

@@ -12,10 +12,11 @@ class CollectionDocument {
     friend class Storage;
 
 protected:
-    explicit CollectionDocument(Storage &);
+    explicit CollectionDocument(Storage &, string const &scheme);
 
 public:
     Storage &storage;
+    string const &scheme;
 };
 
 // 基于key的数据集合
@@ -23,11 +24,18 @@ class CollectionKeyValues {
     friend class Storage;
 
 protected:
-    explicit CollectionKeyValues(Storage &);
+    explicit CollectionKeyValues(Storage &, string const &scheme);
 
 public:
 
+    // 设置数据
+    bool set(string const &key, Variant const &val);
+
+    // 获取数据
+    Variant get(string const &key);
+
     Storage &storage;
+    string const &scheme;
 };
 
 // 数据存储器

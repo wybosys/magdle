@@ -8,6 +8,7 @@ class Logger
 public:
 
     void info(string const& msg);
+    void warn(string const& msg);
     void log(string const& msg);
     void fatal(string const& msg);
 };

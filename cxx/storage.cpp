@@ -1,7 +1,9 @@
 #include "magdle.h"
-#include <sqlite3.h>
+#include "sqlite.h"
 
 ME_NAMESPACE_BEGIN
+
+#define DB storage.d_ptr->db
 
 struct StoragePrivate {
 
@@ -17,14 +19,21 @@ struct StoragePrivate {
     void open() {
         string dbph = env.config.workDirectory.string() + "/db";
         sqlite3_open(dbph.c_str(), &db);
-
-        // 创建用于kv读写的表
-        sqlite3_exec(db, "create table if not exists _kv (d JSON)", NULL, NULL, NULL);
     }
 
     void close() {
         sqlite3_close(db);
         db = nullptr;
+    }
+
+    bool exec(string const &sql) {
+        char *msg;
+        int s = sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &msg);
+        if (s == SQLITE_OK)
+            return true;
+        env.logger.warn(msg);
+        sqlite3_free(msg);
+        return false;
     }
 
     sqlite3 *db = nullptr;
@@ -35,14 +44,51 @@ struct StoragePrivate {
     map<string, CollectionKeyValues> keyvalues;
 };
 
-CollectionDocument::CollectionDocument(Storage &s)
-        : storage(s) {
+CollectionDocument::CollectionDocument(Storage &s, string const &scheme)
+        : storage(s), scheme(scheme) {
 
 }
 
-CollectionKeyValues::CollectionKeyValues(Storage &s)
-        : storage(s) {
+CollectionKeyValues::CollectionKeyValues(Storage &s, string const &scheme)
+        : storage(s), scheme(scheme) {
+    stringbuilder ss;
+    ss << "create table if not exists " << scheme << " (key VARCHAR(256), val BLOB) PRIMARY KEY(key)";
+    storage.d_ptr->exec(ss);
+}
 
+bool CollectionKeyValues::set(std::string const &key, magle::Variant const &val) {
+    stringbuilder ss;
+    ss << "replace into " << scheme << " (key, val) values (?, ?)";
+
+    sqlite::Stmt s;
+    int t = sqlite3_prepare(DB, ss, ss.length(), s, nullptr);
+    if (t != SQLITE_OK)
+        return false;
+
+    sqlite3_bind_text(s, 1, key.c_str(), key.length(), SQLITE_STATIC);
+    sqlite3_bind_blob(s, 2, val.buffer(), val.length(), SQLITE_STATIC);
+    t = sqlite3_step(s);
+    return t == SQLITE_OK;
+}
+
+Variant CollectionKeyValues::get(std::string const &key) {
+    stringbuilder ss;
+    ss << "select val from " << scheme << " key=? limit 1";
+
+    sqlite::Stmt s;
+    int t = sqlite3_prepare(DB, ss, ss.length(), s, nullptr);
+    if (t != SQLITE_OK)
+        return false;
+
+    sqlite3_bind_text(s, 1, key.c_str(), key.length(), SQLITE_STATIC);
+    t = sqlite3_step(s);
+    if (t != SQLITE_OK) {
+        return Variant();
+    }
+
+    void const *raw = sqlite3_column_blob(s, 1);
+    int len = sqlite3_column_bytes(s, 1);
+    return Variant(raw, len);
 }
 
 Storage::Storage(Magdle &env) {
@@ -76,7 +122,7 @@ CollectionDocument &Storage::document(const std::string &scheme) {
     if (fnd != d_ptr->documents.end()) {
         return fnd->second;
     }
-    auto res = d_ptr->documents.insert(make_pair(scheme, CollectionDocument(*this)));
+    auto res = d_ptr->documents.insert(make_pair(scheme, CollectionDocument(*this, scheme)));
     return res.first->second;
 }
 
@@ -85,7 +131,7 @@ CollectionKeyValues &Storage::kv(const std::string &scheme) {
     if (fnd != d_ptr->keyvalues.end()) {
         return fnd->second;
     }
-    auto res = d_ptr->keyvalues.insert(make_pair(scheme, CollectionKeyValues(*this)));
+    auto res = d_ptr->keyvalues.insert(make_pair(scheme, CollectionKeyValues(*this, scheme)));
     return res.first->second;
 }
 

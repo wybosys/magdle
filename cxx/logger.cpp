@@ -8,6 +8,10 @@ void Logger::info(const string &msg) {
     cout << msg << endl;
 }
 
+void Logger::warn(std::string const &msg) {
+    cerr << msg << endl;
+}
+
 void Logger::log(const string &msg) {
     clog << msg << endl;
 }
