@@ -23,7 +23,7 @@ public:
 
     Variant(string const &);
 
-    Variant(void const *, size_t);
+    Variant(void const *, size_t, VariantType = VariantType::UNKNOWN);
 
     Variant(char const *);
 

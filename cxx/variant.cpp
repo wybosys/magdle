@@ -22,8 +22,8 @@ Variant::Variant(string const &str)
     memcpy(_raw, str.c_str(), _length);
 }
 
-Variant::Variant(void const *p, size_t s) :
-        _length(s) {
+Variant::Variant(void const *p, size_t s, VariantType typ) :
+        _length(s), type(typ) {
     _raw = malloc(_length);
     memcpy(_raw, p, _length);
 }
