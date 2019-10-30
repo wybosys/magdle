@@ -25,6 +25,8 @@ public:
 
     Variant(void const *, size_t);
 
+    Variant(char const *);
+
     ~Variant();
 
     // 当前数据类型
@@ -46,6 +48,15 @@ public:
 
     inline operator char const *() const {
         return (char const *) _raw;
+    }
+
+    inline operator string() const {
+        return string((char const *) _raw, _length);
+    }
+
+    template<typename R>
+    inline bool operator==(R const &v) const {
+        return (R) (*this) == v;
     }
 
 private:
