@@ -1,12 +1,15 @@
 #ifndef _ME_VARIANT_H
 #define _ME_VARIANT_H
 
+#include "json.h"
+
 ME_NAMESPACE_BEGIN
 
 enum struct VariantType {
     UNKNOWN = 0, // 未知类型
     INTEGER = 1, // 整数类型
     STRING = 2, // 字符串
+    JSON = 3, // json数据
 };
 
 // 负责承载不同类型数据的转换
@@ -26,6 +29,8 @@ public:
     Variant(void const *, size_t, VariantType = VariantType::UNKNOWN);
 
     Variant(char const *);
+
+    Variant(json_type const &);
 
     ~Variant();
 
@@ -52,6 +57,10 @@ public:
 
     inline operator string() const {
         return string((char const *) _raw, _length);
+    }
+
+    inline operator json_type() const {
+        return ToJsonObj((string) (*this));
     }
 
     template<typename R>

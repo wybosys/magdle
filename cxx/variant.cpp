@@ -35,6 +35,16 @@ Variant::Variant(char const *str)
     memcpy(_raw, str, _length);
 }
 
+Variant::Variant(json_type const &js)
+        : type(VariantType::JSON) {
+    size_t &len = const_cast<size_t &>(_length);
+    string str = ToJson(js);
+    len = str.length();
+
+    _raw = malloc(_length);
+    memcpy(_raw, str.c_str(), _length);
+}
+
 Variant::~Variant() {
     free(_raw);
     _raw = nullptr;
