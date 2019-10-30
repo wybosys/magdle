@@ -39,14 +39,16 @@ return *_shared; \
 #include <c++/9/filesystem>
 #include <c++/9/algorithm>
 
-#include "stringt.h"
-
 ME_NAMESPACE_BEGIN
 
 using namespace ::std;
 
 typedef ::std::filesystem::path path_type;
+typedef ::std::byte * bytes;
 
 ME_NAMESPACE_END
+
+#include "stringt.h"
+#include "variant.h"
 
 #endif

@@ -3,7 +3,8 @@ project(cxx)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(COMMON_IMPL magdle.cpp magdle.h
+set(COMMON_IMPL
+        magdle.cpp magdle.h
         storage.cpp
         similar.h similar.cpp
         kernel.h kernel.cpp
@@ -12,7 +13,9 @@ set(COMMON_IMPL magdle.cpp magdle.h
         dataset.cpp dataset.h
         dataset_images.cpp dataset_images.h
         stringt.h stringt.cpp
-        json.cpp json.h)
+        json.cpp json.h
+        variant.cpp variant.h
+        )
 
 set(OPENCV_IMPL ${COMMON_IMPL}
         similar_ocv.cpp similar_ocv.h)

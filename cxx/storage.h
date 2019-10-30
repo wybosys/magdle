@@ -26,6 +26,7 @@ protected:
     explicit CollectionKeyValues(Storage &);
 
 public:
+
     Storage &storage;
 };
 
