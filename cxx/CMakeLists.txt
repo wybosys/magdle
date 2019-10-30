@@ -26,3 +26,6 @@ set(DEPENDS magdle sqlite3 jsoncpp opencv_core opencv_imgcodecs)
 
 add_executable(rmdup rmdup/rmdup.cpp)
 target_link_libraries(rmdup ${DEPENDS})
+
+add_executable(storage storage/storage.cpp)
+target_link_libraries(storage ${DEPENDS})
