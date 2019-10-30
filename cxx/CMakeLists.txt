@@ -16,17 +16,20 @@ set(COMMON_IMPL
         json.cpp json.h
         variant.cpp variant.h
         timet.cpp timet.h
+        sqlite.cpp
         )
 
 set(OPENCV_IMPL ${COMMON_IMPL}
         similar_ocv.cpp similar_ocv.h)
 
-add_library(magdle SHARED ${OPENCV_IMPL})
+add_library(magdle STATIC ${OPENCV_IMPL})
+add_library(sqlite_ext STATIC sqlite_json1.c)
 
 include_directories(./)
 link_directories(./cmake-build-debug)
 
-set(DEPENDS magdle sqlite3 jsoncpp opencv_core opencv_imgcodecs)
+set(DEPENDS_OPENCV opencv_core opencv_imgcodecs opencv_imgproc)
+set(DEPENDS magdle sqlite_ext sqlite3 jsoncpp ${DEPENDS_OPENCV})
 
 add_executable(rmdup rmdup/rmdup.cpp)
 target_link_libraries(rmdup ${DEPENDS})

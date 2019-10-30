@@ -6,6 +6,20 @@
 ME_NAMESPACE_BEGIN
 namespace sqlite {
 
+// sqlite环境
+class Sqlite3Environment {
+public:
+    Sqlite3Environment();
+
+    ~Sqlite3Environment();
+
+    // 初始化，可重入
+    static void Init();
+
+protected:
+    void init();
+};
+
 class Stmt {
 public:
 

@@ -12,7 +12,7 @@ struct StoragePrivate {
 
     explicit StoragePrivate(Magdle &env)
             : env(env) {
-
+        sqlite::Sqlite3Environment::Init();
     }
 
     ~StoragePrivate() {
@@ -72,7 +72,8 @@ CollectionDocument::CollectionDocument(Storage &s, string const &scheme)
         : storage(s), scheme(scheme) {
     if (!STORAGE->scheme_exists(scheme)) {
         stringbuilder ss;
-        ss << "create table " << scheme << " (val JSON, PRIMARY KEY(val));";
+        ss << "create table " << scheme << " (val JSON);";
+        ss << "create index val on " << scheme << " (val);";
         EXEC(ss);
     }
 }
