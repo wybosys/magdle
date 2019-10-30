@@ -13,7 +13,7 @@ public:
     }
 
     inline operator string const &() const {
-        if (!_changed) {
+        if (_changed) {
             _str = _oss.str();
             _changed = false;
         }

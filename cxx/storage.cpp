@@ -52,7 +52,7 @@ CollectionDocument::CollectionDocument(Storage &s, string const &scheme)
 CollectionKeyValues::CollectionKeyValues(Storage &s, string const &scheme)
         : storage(s), scheme(scheme) {
     stringbuilder ss;
-    ss << "create table if not exists " << scheme << " (key VARCHAR(256), val BLOB) PRIMARY KEY(key)";
+    ss << "create table if not exists " << scheme << " (key VARCHAR(256), val BLOB, PRIMARY KEY(key))";
     storage.d_ptr->exec(ss);
 }
 
@@ -68,12 +68,12 @@ bool CollectionKeyValues::set(std::string const &key, magle::Variant const &val)
     sqlite3_bind_text(s, 1, key.c_str(), key.length(), SQLITE_STATIC);
     sqlite3_bind_blob(s, 2, val.buffer(), val.length(), SQLITE_STATIC);
     t = sqlite3_step(s);
-    return t == SQLITE_OK;
+    return t == SQLITE_DONE;
 }
 
 Variant CollectionKeyValues::get(std::string const &key) {
     stringbuilder ss;
-    ss << "select val from " << scheme << " key=? limit 1";
+    ss << "select val from " << scheme << " where key=? limit 1";
 
     sqlite::Stmt s;
     int t = sqlite3_prepare(DB, ss, ss.length(), s, nullptr);
@@ -82,12 +82,12 @@ Variant CollectionKeyValues::get(std::string const &key) {
 
     sqlite3_bind_text(s, 1, key.c_str(), key.length(), SQLITE_STATIC);
     t = sqlite3_step(s);
-    if (t != SQLITE_OK) {
+    if (t != SQLITE_ROW) {
         return Variant();
     }
 
-    void const *raw = sqlite3_column_blob(s, 1);
-    int len = sqlite3_column_bytes(s, 1);
+    void const *raw = sqlite3_column_blob(s, 0);
+    int len = sqlite3_column_bytes(s, 0);
     return Variant(raw, len);
 }
 

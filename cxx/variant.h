@@ -23,7 +23,7 @@ public:
 
     Variant(string const &);
 
-    Variant(void const*, size_t);
+    Variant(void const *, size_t);
 
     ~Variant();
 
@@ -38,6 +38,14 @@ public:
     // 数据
     inline bytes const buffer() const {
         return (bytes const) _raw;
+    }
+
+    inline operator int() const {
+        return *(int *) _raw;
+    }
+
+    inline operator char const *() const {
+        return (char const *) _raw;
     }
 
 private:
