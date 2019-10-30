@@ -15,6 +15,12 @@ protected:
     explicit CollectionDocument(Storage &, string const &scheme);
 
 public:
+
+    // 插入文档数据
+    bool insert(JsonObj const &);
+
+    // 过滤数据
+
     Storage &storage;
     string const &scheme;
 };
@@ -30,6 +36,9 @@ public:
 
     // 设置数据
     bool set(string const &key, Variant const &val);
+
+    // 添加数据
+    bool insert(string const &key, Variant const &val);
 
     // 获取数据
     Variant get(string const &key);
@@ -62,9 +71,6 @@ public:
     // 获得KV数据
     CollectionKeyValues &kv(string const &scheme);
 
-    bool insert(JsonObj const &);
-
-    vector<JsonObj> query(JsonObj const &filter);
 };
 
 ME_NAMESPACE_END

@@ -35,7 +35,7 @@ Variant::Variant(char const *str)
     memcpy(_raw, str, _length);
 }
 
-Variant::Variant(json_type const &js)
+Variant::Variant(JsonObj const &js)
         : type(VariantType::JSON) {
     size_t &len = const_cast<size_t &>(_length);
     string str = ToJson(js);

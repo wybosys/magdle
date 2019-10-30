@@ -46,10 +46,13 @@ using namespace ::std;
 
 typedef ::std::filesystem::path path_type;
 typedef ::std::byte *bytes;
+typedef long long longlong;
+typedef unsigned long long ulonglong;
 
 ME_NAMESPACE_END
 
 #include "stringt.h"
 #include "variant.h"
+#include "timet.h"
 
 #endif

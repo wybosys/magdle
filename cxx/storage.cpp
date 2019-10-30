@@ -4,6 +4,8 @@
 ME_NAMESPACE_BEGIN
 
 #define DB storage.d_ptr->db
+#define EXEC storage.d_ptr->exec
+#define STORAGE storage.d_ptr
 
 struct StoragePrivate {
 
@@ -26,13 +28,23 @@ struct StoragePrivate {
         db = nullptr;
     }
 
+    bool scheme_exists(string const &scheme) {
+        stringbuilder ss;
+        ss << "select count(*) from sqlite_master where name='" << scheme << "' and type='table'";
+        int count;
+        sqlite3_exec(db, ss, [](void *result, int ret, char **val, char **col) -> int {
+            *((int *) result) = atoi(*val);
+            return 0;
+        }, &count, nullptr);
+        return count == 1;
+    }
+
     bool exec(string const &sql) {
-        char *msg;
-        int s = sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &msg);
+        sqlite::String msg;
+        int s = sqlite3_exec(db, sql.c_str(), nullptr, nullptr, msg);
         if (s == SQLITE_OK)
             return true;
         env.logger.warn(msg);
-        sqlite3_free(msg);
         return false;
     }
 
@@ -46,19 +58,49 @@ struct StoragePrivate {
 
 CollectionDocument::CollectionDocument(Storage &s, string const &scheme)
         : storage(s), scheme(scheme) {
+    if (!STORAGE->scheme_exists(scheme)) {
+        stringbuilder ss;
+        ss << "create table " << scheme << " (val JSON, PRIMARY KEY(val));";
+        EXEC(ss);
+    }
+}
 
+bool CollectionDocument::insert(JsonObj const &obj) {
+    stringbuilder ss;
+    ss << "insert into " << scheme << " values('" << ToJson(obj) << "');";
+    return EXEC(ss);
 }
 
 CollectionKeyValues::CollectionKeyValues(Storage &s, string const &scheme)
         : storage(s), scheme(scheme) {
-    stringbuilder ss;
-    ss << "create table if not exists " << scheme << " (key VARCHAR(256), val BLOB, typ INT, PRIMARY KEY(key))";
-    storage.d_ptr->exec(ss);
+    if (!STORAGE->scheme_exists(scheme)) {
+        stringbuilder ss;
+        ss << "create table " << scheme << " (key VARCHAR(256), val BLOB, typ INT);";
+        ss << "create index key on " << scheme << " (key);";
+        EXEC(ss);
+    }
 }
 
 bool CollectionKeyValues::set(std::string const &key, magle::Variant const &val) {
     stringbuilder ss;
     ss << "replace into " << scheme << " (key, val, typ) values (?, ?, ?)";
+
+    sqlite::Stmt s;
+    int t = sqlite3_prepare(DB, ss, ss.length(), s, nullptr);
+    if (t != SQLITE_OK)
+        return false;
+
+    sqlite3_bind_text(s, 1, key.c_str(), key.length(), SQLITE_STATIC);
+    sqlite3_bind_blob(s, 2, val.buffer(), val.length(), SQLITE_STATIC);
+    sqlite3_bind_int(s, 3, (int) val.type);
+
+    t = sqlite3_step(s);
+    return t == SQLITE_DONE;
+}
+
+bool CollectionKeyValues::insert(std::string const &key, magle::Variant const &val) {
+    stringbuilder ss;
+    ss << "insert into " << scheme << " (key, val, typ) values (?, ?, ?)";
 
     sqlite::Stmt s;
     int t = sqlite3_prepare(DB, ss, ss.length(), s, nullptr);
@@ -105,19 +147,6 @@ Storage::~Storage() {
 void Storage::init() {
     d_ptr->close();
     d_ptr->open();
-}
-
-bool Storage::insert(JsonObj const &obj) {
-    string sql = "insert into _kv values('" + ToJson(obj) + "')";
-    char *err;
-    int s = sqlite3_exec(d_ptr->db, sql.c_str(), NULL, NULL, &err);
-    sqlite3_free(err);
-    return SQLITE_OK == s;
-}
-
-vector<JsonObj> Storage::query(JsonObj const &filter) {
-    vector<JsonObj> r;
-    return r;
 }
 
 CollectionDocument &Storage::document(const std::string &scheme) {

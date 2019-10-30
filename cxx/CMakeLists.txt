@@ -15,6 +15,7 @@ set(COMMON_IMPL
         stringt.h stringt.cpp
         json.cpp json.h
         variant.cpp variant.h
+        timet.cpp timet.h
         )
 
 set(OPENCV_IMPL ${COMMON_IMPL}

@@ -25,6 +25,29 @@ private:
     sqlite3_stmt *_s = nullptr;
 };
 
+class String {
+public:
+
+    ~String() {
+        sqlite3_free(_s);
+    }
+
+    inline operator char **() {
+        return &_s;
+    }
+
+    inline operator char const *() const {
+        return _s;
+    }
+
+    inline operator string() const {
+        return _s;
+    }
+
+private:
+    char *_s = nullptr;
+};
+
 }
 ME_NAMESPACE_END
 

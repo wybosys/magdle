@@ -30,7 +30,9 @@ public:
 
     Variant(char const *);
 
-    Variant(json_type const &);
+    Variant(JsonObj const &);
+
+    Variant(stringbuilder const &ss) : Variant(ss.string()) {}
 
     ~Variant();
 
@@ -59,7 +61,7 @@ public:
         return string((char const *) _raw, _length);
     }
 
-    inline operator json_type() const {
+    inline operator JsonObj() const {
         return ToJsonObj((string) (*this));
     }
 

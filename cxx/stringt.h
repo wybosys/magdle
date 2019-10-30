@@ -13,6 +13,10 @@ public:
     }
 
     inline operator string const &() const {
+        return string();
+    }
+
+    inline string const &string() const {
         if (_changed) {
             _str = _oss.str();
             _changed = false;
@@ -21,16 +25,16 @@ public:
     }
 
     inline operator char const *() const {
-        return ((string const &) (*this)).c_str();
+        return string().c_str();
     }
 
     inline size_t length() const {
-        return ((string const &) (*this)).length();
+        return string().length();
     }
 
 private:
     mutable bool _changed = false;
-    mutable string _str;
+    mutable ::std::string _str;
     ostringstream _oss;
 };
 
