@@ -10,7 +10,7 @@ public:
 
     template<typename T>
     inline BinaryOutput &operator<<(T const &v) {
-        _out << sizeof(T);
+        _out << sizeof(v);
         _out << v;
         return *this;
     }
@@ -25,13 +25,8 @@ public:
         return *this;
     }
 
-    inline void *buf() {
-        return nullptr;
-    }
-
-    inline size_t length() const {
-        return 0;
-    }
+    // 复制当前内容到Variant对象
+    void copyto(Variant &);
 
 private:
     ostringstream _out;

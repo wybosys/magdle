@@ -3,6 +3,11 @@
 
 ME_NAMESPACE_BEGIN
 
+void BinaryOutput::copyto(Variant &v) {
+    string str = _out.str();
+    v.copyfrom(str.c_str(), str.length());
+}
+
 BinaryInput::BinaryInput(void const *ptr, size_t s) {
     _in.rdbuf()->pubsetbuf((char *) ptr, s);
 }

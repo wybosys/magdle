@@ -52,12 +52,7 @@ Variant::Variant(ISerialableObject const &obj)
         : _type(VariantType::UNKNOWN) {
     BinaryOutput o;
     obj.serialize(o);
-
-    int len = o.length();
-    alloc(len);
-    if (len) {
-        memcpy(_raw, o.buf(), len);
-    }
+    o.copyto(*this);
 }
 
 Variant::~Variant() {
@@ -69,6 +64,15 @@ Variant &Variant::refto(void *ptr, size_t s) {
     _owner = false;
     _raw = ptr;
     _length = s;
+    return *this;
+}
+
+Variant &Variant::copyfrom(void const *ptr, size_t s) {
+    clear();
+    alloc(s);
+    if (s) {
+        memcpy(_raw, ptr, s);
+    }
     return *this;
 }
 
