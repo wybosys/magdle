@@ -16,6 +16,13 @@ public:
         return *this;
     }
 
+    template<>
+    inline BinaryOutput &operator<<(Variant const &v) {
+        return write(v);
+    }
+
+    BinaryOutput &write(Variant const &);
+
     BinaryOutput &write(void const *ptr, size_t s) {
         _out.write((char *) &s, sizeof(s));
         if (s == 0 || ptr == nullptr) {
@@ -48,6 +55,11 @@ public:
             throw "类型不匹配";
         _in.read((char *) &v, s);
         return *this;
+    }
+
+    template<>
+    inline BinaryInput &operator>>(Variant &v) {
+        return read(v);
     }
 
     // 读取，重新分配variant的内存

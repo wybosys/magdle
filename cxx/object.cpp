@@ -8,6 +8,15 @@ void BinaryOutput::copyto(Variant &v) {
     v.copyfrom(str.c_str(), str.length());
 }
 
+BinaryOutput &BinaryOutput::write(Variant const &v) {
+    size_t t = v.length();
+    _out.write((char *) &t, sizeof(t));
+    if (t) {
+        _out.write(v, t);
+    }
+    return *this;
+}
+
 BinaryInput::BinaryInput(void const *ptr, size_t s) {
     _in.rdbuf()->pubsetbuf((char *) ptr, s);
 }

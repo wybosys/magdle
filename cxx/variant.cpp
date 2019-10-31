@@ -59,10 +59,10 @@ Variant::~Variant() {
     clear();
 }
 
-Variant &Variant::refto(void *ptr, size_t s) {
+Variant &Variant::refto(void const *ptr, size_t s) {
     clear();
     _owner = false;
-    _raw = ptr;
+    _raw = const_cast<void *>(ptr);
     _length = s;
     return *this;
 }

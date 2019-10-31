@@ -52,14 +52,14 @@ public:
     Variant &alloc(size_t);
 
     // 引用到对应缓存
-    Variant &refto(void *ptr, size_t s);
+    Variant &refto(void const *ptr, size_t s);
 
     // 从原copy
     Variant &copyfrom(void const *ptr, size_t s);
 
     // 数据
-    inline bytes const buffer() const {
-        return (bytes const) _raw;
+    inline char const *buffer() const {
+        return (char const *) _raw;
     }
 
     inline operator int() const {

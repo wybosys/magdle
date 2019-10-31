@@ -27,29 +27,23 @@ public:
     }
 
     bool serialize(BinaryOutput &s) const override {
-        if (_mat.empty()) {
-            s.write(nullptr, 0);
-            return true;
-        }
+        cv::FileStorage fs("mat.yaml", cv::FileStorage::WRITE_BASE64 | cv::FileStorage::MEMORY);
+        fs << "mat" << _mat;
+        cv::String str = fs.releaseAndGetString();
 
-        s << _mat.type() << _mat.rows << _mat.cols;
-        s.write(_mat.data, _mat.elemSize() * _mat.total());
+        Variant v;
+        v.refto(str.begin(), str.length());
+        s << v;
+
         return true;
     }
 
     bool unserialize(BinaryInput &s) override {
+        Variant v;
+        s >> v;
 
-        int rows, cols, type;
-        s >> type >> rows >> cols;
-        if (rows == 0 || cols == 0) {
-            _mat = cv::Mat();
-            return true;
-        }
-
-        // 创建读取
-        _mat.release();
-        _mat.create(rows, cols, type);
-        s.copyto(_mat.data, _mat.elemSize() * _mat.total());
+        cv::FileStorage fs(cv::String((char const *)v, v.length()), cv::FileStorage::MEMORY);
+        fs["mat"] >> _mat;
 
         return true;
     }
