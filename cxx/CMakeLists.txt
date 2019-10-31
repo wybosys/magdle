@@ -20,6 +20,7 @@ set(COMMON_IMPL
         )
 
 set(OPENCV_IMPL ${COMMON_IMPL}
+        ocv.h ocv.cpp
         similar_ocv.cpp similar_ocv.h)
 
 add_library(magdle STATIC ${OPENCV_IMPL})

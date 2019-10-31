@@ -1,10 +1,8 @@
 #include "magdle.h"
 #include "similar_ocv.h"
-#include <opencv2/opencv.hpp>
+#include "ocv.h"
 
 ME_NAMESPACE_BEGIN
-
-using namespace cv;
 
 SimilarOcv::SimilarOcv(Magdle &env)
         : env(env) {
