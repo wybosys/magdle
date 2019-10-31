@@ -34,15 +34,25 @@ public:
 
     Variant(stringbuilder const &ss) : Variant(ss.string()) {}
 
+    Variant(ISerialableObject const &);
+
     ~Variant();
 
     // 当前数据类型
-    VariantType const type = VariantType::UNKNOWN;
+    VariantType type() const {
+        return _type;
+    }
 
     // 字长
     size_t const length() const {
         return _length;
     }
+
+    // 分配内存空间，分配后则丧失之前的数据类型和数据
+    Variant &alloc(size_t);
+
+    // 引用到对应缓存
+    Variant &refto(void *ptr, size_t s);
 
     // 数据
     inline bytes const buffer() const {
@@ -51,6 +61,10 @@ public:
 
     inline operator int() const {
         return *(int *) _raw;
+    }
+
+    inline operator char *() {
+        return (char *) _raw;
     }
 
     inline operator char const *() const {
@@ -70,9 +84,21 @@ public:
         return (R) (*this) == v;
     }
 
-private:
+protected:
+
+    inline void clear() {
+        if (_owner && _raw)
+            free(_raw);
+        _raw = nullptr;
+        _length = 0;
+        _owner = true;
+        _type = VariantType::UNKNOWN;
+    }
+
+    bool _owner = true;
     void *_raw = nullptr;
-    size_t const _length = 0;
+    size_t _length = 0;
+    VariantType _type = VariantType::UNKNOWN;
 };
 
 ME_NAMESPACE_END

@@ -151,7 +151,7 @@ bool CollectionKeyValues::set(std::string const &key, magle::Variant const &val)
 
     sqlite3_bind_text(s, 1, key.c_str(), key.length(), SQLITE_STATIC);
     sqlite3_bind_blob(s, 2, val.buffer(), val.length(), SQLITE_STATIC);
-    sqlite3_bind_int(s, 3, (int) val.type);
+    sqlite3_bind_int(s, 3, (int) val.type());
 
     t = sqlite3_step(s);
     return t == SQLITE_DONE;
@@ -168,7 +168,7 @@ bool CollectionKeyValues::insert(std::string const &key, magle::Variant const &v
 
     sqlite3_bind_text(s, 1, key.c_str(), key.length(), SQLITE_STATIC);
     sqlite3_bind_blob(s, 2, val.buffer(), val.length(), SQLITE_STATIC);
-    sqlite3_bind_int(s, 3, (int) val.type);
+    sqlite3_bind_int(s, 3, (int) val.type());
 
     t = sqlite3_step(s);
     return t == SQLITE_DONE;

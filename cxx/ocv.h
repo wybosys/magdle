@@ -26,12 +26,31 @@ public:
         return _mat;
     }
 
-    bool serialize(binary_oarchive &s) const override {
-        // s << ::boost::serialization::make_array(_mat.ptr(), _mat.size);
+    bool serialize(BinaryOutput &s) const override {
+        if (_mat.empty()) {
+            s.write(nullptr, 0);
+            return true;
+        }
+
+        s << _mat.type() << _mat.rows << _mat.cols;
+        s.write(_mat.data, _mat.elemSize() * _mat.total());
         return true;
     }
 
-    bool unserialize(binary_iarchive &s) override {
+    bool unserialize(BinaryInput &s) override {
+
+        int rows, cols, type;
+        s >> type >> rows >> cols;
+        if (rows == 0 || cols == 0) {
+            _mat = cv::Mat();
+            return true;
+        }
+
+        // 创建读取
+        _mat.release();
+        _mat.create(rows, cols, type);
+        s.copyto(_mat.data, _mat.elemSize() * _mat.total());
+
         return true;
     }
 

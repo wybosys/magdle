@@ -11,27 +11,27 @@ class SimilarOcvDbObject : public ISerialableObject {
 public:
 
     SimilarOcvDbObject() {
-
+        // pass
     }
 
     SimilarOcvDbObject(Variant const &r) {
-
+        BinaryInput t(r);
+        unserialize(t);
     }
 
-    bool serialize(binary_oarchive &s) const override {
+    bool serialize(BinaryOutput &s) const override {
         s << version;
         hist.serialize(s);
         s << base;
         return true;
     }
 
-    bool unserialize(binary_iarchive &s) override {
+    bool unserialize(BinaryInput &s) override {
         s >> version;
         hist.unserialize(s);
         s >> base;
         return true;
     }
-
 
     int version = VERSION;
     opencv::Mat hist;
@@ -106,7 +106,7 @@ void SimilarOcv::updateOne(const DataSetImageItem &item) {
     const double base = compareHist(hist, hist, cv::HISTCMP_INTERSECT);
     rcd.base = base;
 
-    // d_ptr->db->set(item.url, rcd);
+    d_ptr->db->set(item.url, rcd);
 }
 
 ME_NAMESPACE_END
