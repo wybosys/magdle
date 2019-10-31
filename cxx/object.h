@@ -10,16 +10,17 @@ public:
 
     template<typename T>
     inline BinaryOutput &operator<<(T const &v) {
-        _out << sizeof(v);
-        _out << v;
+        size_t s = sizeof(v);
+        _out.write((char *) &s, sizeof(s));
+        _out.write((char *) &v, s);
         return *this;
     }
 
     BinaryOutput &write(void const *ptr, size_t s) {
+        _out.write((char *) &s, sizeof(s));
         if (s == 0 || ptr == nullptr) {
-            _out << s;
+            // pass
         } else {
-            _out << s;
             _out.write((char const *) ptr, s);
         }
         return *this;
@@ -29,7 +30,7 @@ public:
     void copyto(Variant &);
 
 private:
-    ostringstream _out;
+    ostringstream _out = ostringstream(ios_base::binary);
 };
 
 class BinaryInput {
@@ -42,10 +43,10 @@ public:
     template<typename T>
     inline BinaryInput &operator>>(T &v) {
         size_t s;
-        _in >> s;
+        _in.read((char *) &s, sizeof(s));
         if (s != sizeof(v))
             throw "类型不匹配";
-        _in >> v;
+        _in.read((char *) &v, s);
         return *this;
     }
 
@@ -56,7 +57,7 @@ public:
     BinaryInput &copyto(void *buf, size_t len);
 
 private:
-    istringstream _in;
+    istringstream _in = istringstream(ios_base::binary);
 };
 
 interface ISerialableObject {

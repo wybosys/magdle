@@ -18,7 +18,7 @@ BinaryInput::BinaryInput(Variant const &v) {
 
 BinaryInput &BinaryInput::read(Variant &v) {
     size_t s;
-    _in >> s;
+    _in.read((char *) &s, sizeof(s));
     v.alloc(s);
     if (s != 0) {
         _in.read(v, s);
@@ -28,7 +28,7 @@ BinaryInput &BinaryInput::read(Variant &v) {
 
 BinaryInput &BinaryInput::copyto(void *buf, size_t len) {
     size_t s;
-    _in >> s;
+    _in.read((char *) &s, sizeof(s));
     if (len == 0 && s == 0)
         return *this;
     if (s != len)
