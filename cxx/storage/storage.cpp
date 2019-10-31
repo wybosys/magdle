@@ -14,5 +14,10 @@ int main() {
     auto doc = env.storage.document("nosql");
     doc.insert(JsonObj()("abc", 123));
 
+    auto cur = c.cursor();
+    while (cur.next()) {
+        env.logger.info(cur.get());
+    }
+
     return 0;
 }

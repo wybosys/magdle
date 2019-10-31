@@ -7,6 +7,34 @@ ME_NAMESPACE_BEGIN
 
 ME_CLASS_PREPARE(Storage)
 
+ME_CLASS_PREPARE(CollectionCursor)
+
+// 数据游标
+class CollectionCursor {
+ME_CLASS_DECL(CollectionCursor)
+public:
+
+    explicit CollectionCursor(void *bind = nullptr);
+
+    ~CollectionCursor();
+
+    // 默认代表游历所有数据
+    static string const KEY_ALL;
+
+    // 读取一行数据, 返回false代表已经没有数据
+    bool next();
+};
+
+inline string const CollectionCursor::KEY_ALL = "";
+
+class CollectionKeyValuesCursor : public CollectionCursor {
+public:
+    explicit CollectionKeyValuesCursor(void *bind = nullptr) : CollectionCursor(bind) {}
+
+    // 获得当前数据
+    Variant get();
+};
+
 // 基于文档的数据集合
 class CollectionDocument {
     friend class Storage;
@@ -18,8 +46,6 @@ public:
 
     // 插入文档数据
     bool insert(JsonObj const &);
-
-    // 过滤数据
 
     Storage &storage;
     string const &scheme;
@@ -43,6 +69,9 @@ public:
     // 获取数据
     Variant get(string const &key);
 
+    // 获得数据游标
+    CollectionKeyValuesCursor cursor(string const &key = CollectionCursor::KEY_ALL);
+
     Storage &storage;
     string const &scheme;
 };
@@ -63,7 +92,7 @@ protected:
     // 初始化数据库
     void init();
 
-    Magdle& env;
+    Magdle &env;
 
 public:
 

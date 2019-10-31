@@ -8,6 +8,8 @@ ME_NAMESPACE_BEGIN
 #define STORAGE storage.d_ptr
 #define ENV storage.env
 
+//-------------------------------------------StoragePrivate
+
 struct StoragePrivate {
 
     explicit StoragePrivate(Magdle &env)
@@ -68,6 +70,35 @@ struct StoragePrivate {
     map<string, CollectionKeyValues> keyvalues;
 };
 
+//-------------------------------------------CollectionCursor
+
+struct CollectionCursorPrivate {
+    sqlite::Stmt s;
+};
+
+CollectionCursor::CollectionCursor(void *bind) {
+    ME_CLASS_CONSTRUCT()
+    d_ptr->s.set((sqlite3_stmt *) bind);
+}
+
+CollectionCursor::~CollectionCursor() {
+    ME_CLASS_DESTORY()
+}
+
+bool CollectionCursor::next() {
+    int t = sqlite3_step(d_ptr->s);
+    return t == SQLITE_ROW;
+}
+
+Variant CollectionKeyValuesCursor::get() {
+    void const *raw = sqlite3_column_blob(d_ptr->s, 0);
+    int len = sqlite3_column_bytes(d_ptr->s, 0);
+    int typ = sqlite3_column_int(d_ptr->s, 1);
+    return Variant(raw, len, (VariantType) typ);
+}
+
+//-------------------------------------------CollectionDocument
+
 CollectionDocument::CollectionDocument(Storage &s, string const &scheme)
         : storage(s), scheme(scheme) {
     if (!STORAGE->scheme_exists(scheme)) {
@@ -83,6 +114,8 @@ bool CollectionDocument::insert(JsonObj const &obj) {
     ss << "insert into " << scheme << " values('" << ToJson(obj) << "');";
     return EXEC(ss);
 }
+
+//-------------------------------------------CollectionKeyValues
 
 CollectionKeyValues::CollectionKeyValues(Storage &s, string const &scheme)
         : storage(s), scheme(scheme) {
@@ -141,8 +174,10 @@ Variant CollectionKeyValues::get(std::string const &key) {
 
     sqlite::Stmt s;
     int t = sqlite3_prepare(DB, ss, ss.length(), s, nullptr);
-    if (t != SQLITE_OK)
+    if (t != SQLITE_OK) {
+        ENV.logger.warn(ss);
         return false;
+    }
 
     sqlite3_bind_text(s, 1, key.c_str(), key.length(), SQLITE_STATIC);
     t = sqlite3_step(s);
@@ -155,6 +190,24 @@ Variant CollectionKeyValues::get(std::string const &key) {
     int typ = sqlite3_column_int(s, 1);
     return Variant(raw, len, (VariantType) typ);
 }
+
+CollectionKeyValuesCursor CollectionKeyValues::cursor(string const &key) {
+    stringbuilder ss;
+    ss << "select val from " << scheme;
+    if (key != CollectionCursor::KEY_ALL) {
+        ss << " where key='" << key << "'";
+    }
+    sqlite3_stmt *s;
+    int t = sqlite3_prepare(DB, ss, ss.length(), &s, nullptr);
+    if (t != SQLITE_OK) {
+        ENV.logger.warn(ss);
+        return CollectionKeyValuesCursor();
+    }
+
+    return CollectionKeyValuesCursor(s);
+}
+
+//-------------------------------------------Storage
 
 Storage::Storage(Magdle &env) : env(env) {
     ME_CLASS_CONSTRUCT(env)

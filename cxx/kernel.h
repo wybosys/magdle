@@ -9,13 +9,19 @@
 class Magdle;
 #define ME_NAMESPACE_END }
 
+#define ME_FRIEND(cls) friend class cls;
+#define ME_NOCOPY(cls) private: cls(cls&);
+#define ME_PRIVATECLASS(cls) cls##Private
+
 #define ME_CLASS_PREPARE(cls) \
 class cls; \
-class cls##Private;
+class ME_PRIVATECLASS(cls);
+
 #define ME_CLASS_DECL(cls) \
-private: typedef cls##Private private_class_type; \
+protected: typedef ME_PRIVATECLASS(cls) private_class_type; \
 private_class_type *d_ptr = nullptr; \
-friend class Magdle;
+friend class Magdle; \
+private: ME_NOCOPY(cls);
 
 #define ME_CLASS_CONSTRUCT(...) \
 d_ptr = new private_class_type(__VA_ARGS__);
@@ -32,8 +38,6 @@ _shared = new cls(); \
 } \
 return *_shared; \
 }
-
-#define ME_FRIEND(cls) friend class cls;
 
 #include <c++/9/string>
 #include <c++/9/filesystem>

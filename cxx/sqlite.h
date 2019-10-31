@@ -35,6 +35,11 @@ public:
         return &_s;
     }
 
+    inline void set(sqlite3_stmt *s) {
+        sqlite3_finalize(_s);
+        _s = s;
+    }
+
 private:
     sqlite3_stmt *_s = nullptr;
 };
