@@ -63,6 +63,8 @@ protected:
 
 public:
 
+    typedef shared_ptr <CollectionKeyValuesCursor> cursor_type;
+
     // 设置数据
     bool set(string const &key, Variant const &val);
 
@@ -73,7 +75,7 @@ public:
     Variant get(string const &key);
 
     // 获得数据游标
-    CollectionKeyValuesCursor cursor(string const &key = CollectionCursor::KEY_ALL);
+    cursor_type cursor(string const &key = CollectionCursor::KEY_ALL);
 
     Storage &storage;
     string const &scheme;
@@ -99,11 +101,14 @@ protected:
 
 public:
 
+    typedef shared_ptr <CollectionDocument> collection_document_type;
+    typedef shared_ptr <CollectionKeyValues> collection_keyvalues_type;
+
     // 获得文档数据
-    CollectionDocument &document(string const &scheme);
+    collection_document_type document(string const &scheme);
 
     // 获得KV数据
-    CollectionKeyValues &kv(string const &scheme);
+    collection_keyvalues_type kv(string const &scheme);
 
 };
 

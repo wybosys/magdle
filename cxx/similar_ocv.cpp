@@ -4,9 +4,18 @@
 
 ME_NAMESPACE_BEGIN
 
+struct SimilarOcvPrivate {
+
+};
+
 SimilarOcv::SimilarOcv(Magdle &env)
         : env(env) {
+    ME_CLASS_CONSTRUCT()
     env.logger.log("实例化基于OpenCV的Similar实现");
+}
+
+SimilarOcv::~SimilarOcv() {
+    ME_CLASS_DESTORY()
 }
 
 void SimilarOcv::update(DataSetImages const &ds) {
@@ -45,7 +54,8 @@ void SimilarOcv::updateOne(const DataSetImageItem &item) {
     Mat hist;
     vector<Mat> channs;
     split(img, channs);
-    calcHist(channs, vector<int>({0, 1, 2}), Mat(), hist, vector<int>({8, 8, 8}), vector<float>({0, 256, 0, 256, 0, 256}));
+    calcHist(channs, vector<int>({0, 1, 2}), Mat(), hist, vector<int>({8, 8, 8}),
+             vector<float>({0, 256, 0, 256, 0, 256}));
     normalize(hist, hist, 0, 255, NORM_MINMAX);
 
     // 自身比较作为基准

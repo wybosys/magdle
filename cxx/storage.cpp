@@ -66,8 +66,8 @@ struct StoragePrivate {
     Magdle &env;
 
     // 已经打开的集合
-    map<string, CollectionDocument> documents;
-    map<string, CollectionKeyValues> keyvalues;
+    map<string, Storage::collection_document_type> documents;
+    map<string, Storage::collection_keyvalues_type> keyvalues;
 };
 
 //-------------------------------------------CollectionCursor
@@ -197,7 +197,7 @@ Variant CollectionKeyValues::get(std::string const &key) {
     return Variant(raw, len, (VariantType) typ);
 }
 
-CollectionKeyValuesCursor CollectionKeyValues::cursor(string const &key) {
+CollectionKeyValues::cursor_type CollectionKeyValues::cursor(string const &key) {
     stringbuilder ss;
     ss << "select key,val from " << scheme;
     if (key != CollectionCursor::KEY_ALL) {
@@ -207,10 +207,10 @@ CollectionKeyValuesCursor CollectionKeyValues::cursor(string const &key) {
     int t = sqlite3_prepare(DB, ss, ss.length(), &s, nullptr);
     if (t != SQLITE_OK) {
         ENV.logger.warn(ss);
-        return CollectionKeyValuesCursor();
+        return make_shared<CollectionKeyValuesCursor>();
     }
 
-    return CollectionKeyValuesCursor(s);
+    return make_shared<CollectionKeyValuesCursor>(s);
 }
 
 //-------------------------------------------Storage
@@ -228,21 +228,21 @@ void Storage::init() {
     d_ptr->open();
 }
 
-CollectionDocument &Storage::document(const std::string &scheme) {
+Storage::collection_document_type Storage::document(const std::string &scheme) {
     auto fnd = d_ptr->documents.find(scheme);
     if (fnd != d_ptr->documents.end()) {
         return fnd->second;
     }
-    auto res = d_ptr->documents.insert(make_pair(scheme, CollectionDocument(*this, scheme)));
+    auto res = d_ptr->documents.insert(pair(scheme, new CollectionDocument(*this, scheme)));
     return res.first->second;
 }
 
-CollectionKeyValues &Storage::kv(const std::string &scheme) {
+Storage::collection_keyvalues_type Storage::kv(const std::string &scheme) {
     auto fnd = d_ptr->keyvalues.find(scheme);
     if (fnd != d_ptr->keyvalues.end()) {
         return fnd->second;
     }
-    auto res = d_ptr->keyvalues.insert(make_pair(scheme, CollectionKeyValues(*this, scheme)));
+    auto res = d_ptr->keyvalues.insert(pair(scheme, new CollectionKeyValues(*this, scheme)));
     return res.first->second;
 }
 

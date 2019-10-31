@@ -5,16 +5,22 @@
 
 ME_NAMESPACE_BEGIN
 
-class SimilarOcv: public ISimilar
-{
-public:
-    explicit SimilarOcv(Magdle&);
+ME_CLASS_PREPARE(SimilarOcv);
 
-    void update(DataSetImages const&) override;
-    void updateOne(DataSetImageItem const&);
+class SimilarOcv : public ISimilar {
+ME_CLASS_DECL(SimilarOcv);
+
+public:
+    explicit SimilarOcv(Magdle &);
+
+    ~SimilarOcv();
+
+    void update(DataSetImages const &) override;
+
+    void updateOne(DataSetImageItem const &);
 
 private:
-    Magdle& env;
+    Magdle &env;
 };
 
 ME_NAMESPACE_END
