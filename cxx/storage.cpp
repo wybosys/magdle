@@ -74,6 +74,7 @@ struct StoragePrivate {
 
 struct CollectionCursorPrivate {
     sqlite::Stmt s;
+    size_t readed = 0;
 };
 
 CollectionCursor::CollectionCursor(void *bind) {
@@ -90,10 +91,15 @@ bool CollectionCursor::next() {
     return t == SQLITE_ROW;
 }
 
-Variant CollectionKeyValuesCursor::get() {
-    void const *raw = sqlite3_column_blob(d_ptr->s, 0);
-    int len = sqlite3_column_bytes(d_ptr->s, 0);
-    int typ = sqlite3_column_int(d_ptr->s, 1);
+size_t CollectionCursor::readed() const {
+    return d_ptr->readed;
+}
+
+Variant CollectionKeyValuesCursor::value() {
+    void const *raw = sqlite3_column_blob(d_ptr->s, 1);
+    int len = sqlite3_column_bytes(d_ptr->s, 1);
+    int typ = sqlite3_column_int(d_ptr->s, 2);
+    ++d_ptr->readed;
     return Variant(raw, len, (VariantType) typ);
 }
 
@@ -193,7 +199,7 @@ Variant CollectionKeyValues::get(std::string const &key) {
 
 CollectionKeyValuesCursor CollectionKeyValues::cursor(string const &key) {
     stringbuilder ss;
-    ss << "select val from " << scheme;
+    ss << "select key,val from " << scheme;
     if (key != CollectionCursor::KEY_ALL) {
         ss << " where key='" << key << "'";
     }

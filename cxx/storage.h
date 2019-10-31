@@ -23,6 +23,9 @@ public:
 
     // 读取一行数据, 返回false代表已经没有数据
     bool next();
+
+    // 当前读取了多少数据
+    size_t readed() const;
 };
 
 inline string const CollectionCursor::KEY_ALL = "";
@@ -32,7 +35,7 @@ public:
     explicit CollectionKeyValuesCursor(void *bind = nullptr) : CollectionCursor(bind) {}
 
     // 获得当前数据
-    Variant get();
+    Variant value();
 };
 
 // 基于文档的数据集合

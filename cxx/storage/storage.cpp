@@ -10,7 +10,7 @@ int main() {
     c.set("abc", 123);
     c.insert("time", stringbuilder() << Time::Now());
     env.logger.assert(c.get("abc") == 123, "abc != 123");
-    
+
     auto doc = env.storage.document("nosql");
     doc.insert(JsonObj()("abc", 123));
 
@@ -18,9 +18,9 @@ int main() {
     cost.start();
     auto cur = c.cursor();
     while (cur.next()) {
-        env.logger.info(cur.get());
+        env.logger.info(cur.value());
     }
-    env.logger.info(stringbuilder() << "耗时:" << cost.cost());
+    env.logger.info(stringbuilder() << "耗时:" << cost.cost() << " 读取:" << cur.readed());
 
     return 0;
 }
