@@ -128,7 +128,7 @@ CollectionKeyValues::CollectionKeyValues(Storage &s, string const &scheme)
     if (!STORAGE->scheme_exists(scheme)) {
         stringbuilder ss;
         ss << "create table " << scheme << " (key VARCHAR(256), val BLOB, typ INT);";
-        ss << "create index key on " << scheme << " (key);";
+        ss << "create index main on " << scheme << "(key);";
         EXEC(ss);
     }
 }
