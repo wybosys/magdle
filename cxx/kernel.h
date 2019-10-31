@@ -43,6 +43,7 @@ return *_shared; \
 #include <c++/9/filesystem>
 #include <c++/9/algorithm>
 #include <c++/9/memory>
+#include <c++/9/iostream>
 
 ME_NAMESPACE_BEGIN
 
@@ -55,6 +56,7 @@ typedef unsigned long long ulonglong;
 
 ME_NAMESPACE_END
 
+#include "object.h"
 #include "threadt.h"
 #include "stringt.h"
 #include "variant.h"

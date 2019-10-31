@@ -4,56 +4,41 @@
 
 ME_NAMESPACE_BEGIN
 
+static const int VERSION = 1;
+
 // 相似读检测用于保存数据的对象
-class SimilarOcvDbObject {
+class SimilarOcvDbObject : public ISerialableObject {
 public:
 
     SimilarOcvDbObject() {
-        _obj.set("hist", nullptr);
-        _obj.set("version", 0);
+
     }
 
-private:
-    JsonObj _obj;
+    SimilarOcvDbObject(Variant const &r) {
+
+    }
+
+    bool serialize(binary_oarchive &s) const override {
+        s << version;
+        hist.serialize(s);
+        s << base;
+        return true;
+    }
+
+    bool unserialize(binary_iarchive &s) override {
+        s >> version;
+        hist.unserialize(s);
+        s >> base;
+        return true;
+    }
+
+
+    int version = VERSION;
+    opencv::Mat hist;
+    double base = 0;
 };
 
 struct SimilarOcvPrivate {
-
-    // 获得单张图的hist
-    opencv::Mat calcHist(string const &url) {
-        // 读取原始图片
-        cv::Mat img = cv::imread(url);
-
-        // 缩放到统一大小
-        resize(img, img, cv::Size(128, 128));
-
-        // 自动亮度
-        cv::Mat gray;
-        cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
-        const double mg = mean(gray)[0];
-        const double light = 0.5 * 255 / mg;
-        auto f = vector<double>({light, light, light, 1});
-        f.resize(img.channels());
-        multiply(img, f, img);
-
-        // 自动白平衡
-        auto ks = mean(img);
-        const double kb = ks[0];
-        const double kg = ks[1];
-        const double kr = ks[2];
-        const double k = kb + kg + kr;
-        multiply(img, vector<double>({k / (3 * kb), k / (3 * kg), k / (3 * kr)}), img);
-
-        // 计算直方图
-        cv::Mat hist;
-        vector<cv::Mat> channs;
-        split(img, channs);
-        cv::calcHist(channs, vector<int>({0, 1, 2}), cv::Mat(), hist, vector<int>({8, 8, 8}), vector<float>({0, 256, 0, 256, 0, 256}));
-        normalize(hist, hist, 0, 255, cv::NORM_MINMAX);
-
-        return hist;
-    }
-
     Storage::collection_keyvalues_type db;
 };
 
@@ -78,16 +63,50 @@ void SimilarOcv::update(DataSetImages const &ds) {
 }
 
 void SimilarOcv::updateOne(const DataSetImageItem &item) {
-    // 判断是否已经计算过
+    // 如果已经计算过，而且版本也一致，则跳过
     if (d_ptr->db->exists(item.url)) {
-
-    } else {
-
+        SimilarOcvDbObject rcd(d_ptr->db->get(item.url));
+        if (rcd.version == VERSION)
+            return;;
     }
 
-    // 自身比较作为基准
-    // const double base = compareHist(hist, hist, HISTCMP_INTERSECT);
+    SimilarOcvDbObject rcd;
 
+    // 读取原始图片
+    cv::Mat img = cv::imread(item.url.string());
+
+    // 缩放到统一大小
+    resize(img, img, cv::Size(128, 128));
+
+    // 自动亮度
+    cv::Mat gray;
+    cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+    const double mg = mean(gray)[0];
+    const double light = 0.5 * 255 / mg;
+    auto f = vector<double>({light, light, light, 1});
+    f.resize(img.channels());
+    multiply(img, f, img);
+
+    // 自动白平衡
+    auto ks = mean(img);
+    const double kb = ks[0];
+    const double kg = ks[1];
+    const double kr = ks[2];
+    const double k = kb + kg + kr;
+    multiply(img, vector<double>({k / (3 * kb), k / (3 * kg), k / (3 * kr)}), img);
+
+    // 计算直方图
+    cv::Mat hist;
+    vector<cv::Mat> channs;
+    split(img, channs);
+    cv::calcHist(channs, vector<int>({0, 1, 2}), cv::Mat(), hist, vector<int>({8, 8, 8}), vector<float>({0, 256, 0, 256, 0, 256}));
+    normalize(hist, hist, 0, 255, cv::NORM_MINMAX);
+    rcd.hist = hist;
+
+    const double base = compareHist(hist, hist, cv::HISTCMP_INTERSECT);
+    rcd.base = base;
+
+    // d_ptr->db->set(item.url, rcd);
 }
 
 ME_NAMESPACE_END

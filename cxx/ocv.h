@@ -7,7 +7,7 @@ ME_NAMESPACE_BEGIN
 
 namespace opencv {
 
-class Mat {
+class Mat : public ISerialableObject {
 public:
 
     Mat() {
@@ -24,6 +24,15 @@ public:
 
     inline operator cv::Mat const &() const {
         return _mat;
+    }
+
+    bool serialize(binary_oarchive &s) const override {
+        // s << ::boost::serialization::make_array(_mat.ptr(), _mat.size);
+        return true;
+    }
+
+    bool unserialize(binary_iarchive &s) override {
+        return true;
     }
 
 private:

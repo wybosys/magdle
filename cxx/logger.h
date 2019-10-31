@@ -15,7 +15,7 @@ public:
     void fatal(string const &msg);
 
     template<typename T>
-    void assert(T const &v, string const &msg) {
+    void ensure(T const &v, string const &msg) {
         if (!v) {
             fatal(msg);
         }
