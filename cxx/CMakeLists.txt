@@ -17,6 +17,7 @@ set(COMMON_IMPL
         variant.cpp variant.h
         timet.cpp timet.h
         sqlite.cpp
+        threadt.h threadt.cpp
         )
 
 set(OPENCV_IMPL ${COMMON_IMPL}

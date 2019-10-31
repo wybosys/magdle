@@ -71,6 +71,9 @@ public:
     // 添加数据
     bool insert(string const &key, Variant const &val);
 
+    // 是否存在
+    bool exists(string const &key);
+
     // 获取数据
     Variant get(string const &key);
 

@@ -174,6 +174,12 @@ bool CollectionKeyValues::insert(std::string const &key, magle::Variant const &v
     return t == SQLITE_DONE;
 }
 
+bool CollectionKeyValues::exists(string const &key) {
+    stringbuilder ss;
+    ss << "from " << scheme << " where key='" << key << "'";
+    return STORAGE->row_exists(ss);
+}
+
 Variant CollectionKeyValues::get(std::string const &key) {
     stringbuilder ss;
     ss << "select val,typ from " << scheme << " where key=? limit 1";

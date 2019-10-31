@@ -55,6 +55,7 @@ typedef unsigned long long ulonglong;
 
 ME_NAMESPACE_END
 
+#include "threadt.h"
 #include "stringt.h"
 #include "variant.h"
 #include "timet.h"
