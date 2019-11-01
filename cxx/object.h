@@ -1,6 +1,8 @@
 #ifndef _ME_OBJECT_H
 #define _ME_OBJECT_H
 
+#include CXX_INCLUDE(sstream)
+
 ME_NAMESPACE_BEGIN
 
 class Variant;
