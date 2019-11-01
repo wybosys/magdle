@@ -2,7 +2,7 @@
 #define _ME_DS_IMAGES_H
 
 #include "dataset.h"
-#include <c++/9/vector>
+#include CXX_INCLUDE(vector)
 
 ME_NAMESPACE_BEGIN
 

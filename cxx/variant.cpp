@@ -1,6 +1,6 @@
 #include "magdle.h"
 #include "variant.h"
-#include <c++/9/cstring>
+#include CXX_INCLUDE(cstring)
 
 ME_NAMESPACE_BEGIN
 

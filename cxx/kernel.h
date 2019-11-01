@@ -39,11 +39,14 @@ _shared = new cls(); \
 return *_shared; \
 }
 
-#include <c++/9/string>
-#include <c++/9/filesystem>
-#include <c++/9/algorithm>
-#include <c++/9/memory>
-#include <c++/9/iostream>
+#define CXX17_INCLUDE(file) <experimental/file>
+#define CXX_INCLUDE(file) <file>
+
+#include CXX_INCLUDE(string)
+#include CXX_INCLUDE(filesystem)
+#include CXX_INCLUDE(algorithm)
+#include CXX_INCLUDE(memory)
+#include CXX_INCLUDE(iostream)
 
 ME_NAMESPACE_BEGIN
 

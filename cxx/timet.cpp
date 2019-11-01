@@ -1,6 +1,6 @@
 #include "magdle.h"
 #include "timet.h"
-#include <c++/9/chrono>
+#include CXX_INCLUDE(chrono)
 
 ME_NAMESPACE_BEGIN
 

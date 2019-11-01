@@ -1,6 +1,6 @@
 #include "magdle.h"
 #include "dataset_images.h"
-#include <c++/9/regex>
+#include CXX_INCLUDE(regex)
 
 ME_NAMESPACE_BEGIN
 
