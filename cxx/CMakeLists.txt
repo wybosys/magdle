@@ -3,7 +3,7 @@ project(cxx)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(COMMON_IMPL
+set(IMPLS
         magdle.cpp magdle.h
         storage.cpp
         similar.h similar.cpp
@@ -21,18 +21,29 @@ set(COMMON_IMPL
         object.h object.cpp
         )
 
-set(OPENCV_IMPL ${COMMON_IMPL}
+set(IMPLS_OPENCV
         ocv.h ocv.cpp
         similar_ocv.cpp similar_ocv.h)
 
-add_library(magdle STATIC ${OPENCV_IMPL})
+set(IMPLS_IOS
+        similar_ios.h similar_ios.mm)
+
+set(IMPLS_MACOS
+        similar_macos.h similar_macos.mm)
+
+set(DEPENDS magdle sqlite_ext sqlite3 jsoncpp)
+set(DEPENDS_OPENCV opencv_core opencv_imgcodecs opencv_imgproc)
+
+if (UNIX)
+    list(APPEND IMPLS ${IMPLS_OPENCV})
+    list(APPEND DEPENDS ${DEPENDS_OPENCV})
+endif ()
+
+add_library(magdle STATIC ${IMPLS})
 add_library(sqlite_ext STATIC sqlite_json1.c)
 
 include_directories(./)
 link_directories(./cmake-build-debug)
-
-set(DEPENDS_OPENCV opencv_core opencv_imgcodecs opencv_imgproc)
-set(DEPENDS magdle sqlite_ext sqlite3 jsoncpp ${DEPENDS_OPENCV})
 
 add_executable(rmdup rmdup/rmdup.cpp)
 target_link_libraries(rmdup ${DEPENDS})
