@@ -3,5 +3,12 @@
 
 ME_NAMESPACE_BEGIN
 
+Worker::Worker() {
+
+}
+
+Worker::~Worker() {
+
+}
 
 ME_NAMESPACE_END

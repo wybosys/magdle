@@ -3,6 +3,14 @@
 
 ME_NAMESPACE_BEGIN
 
+class Worker {
+public:
+
+    Worker();
+
+    ~Worker();
+
+};
 
 ME_NAMESPACE_END
 
