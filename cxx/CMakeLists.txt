@@ -16,7 +16,6 @@ set(IMPLS
         json.cpp json.h
         variant.cpp variant.h
         timet.cpp timet.h
-        sqlite.cpp
         threadt.h threadt.cpp
         object.h object.cpp
         linear.h linear.cpp
@@ -25,30 +24,44 @@ set(IMPLS
         faces.h faces.cpp
         )
 
+# 内嵌第三方
+set(IMPLS_3RD 3rd/sqlite.cpp)
+
+# OPENCV实现
 set(IMPLS_OPENCV
         ocv.h ocv.cpp
         similar_ocv.h similar_ocv.cpp
         faces_ocv.h faces_ocv.cpp)
 
+# IOS实现
 set(IMPLS_IOS
         similar_ios.h similar_ios.mm
         faces_ios.h faces_ios.mm)
 
+# MACOS实现
 set(IMPLS_MACOS
         similar_macos.h similar_macos.mm
         faces_macos.h faces_macos.mm)
 
-set(DEPENDS magdle sqlite_ext sqlite3 jsoncpp)
+# 链接库
+set(DEPENDS magdle 3rd sqlite3 jsoncpp)
 set(DEPENDS_OPENCV opencv_core opencv_imgcodecs opencv_imgproc)
 
+# 根据系统筛选编译文件
+list(APPEND IMPLS ${IMPLS_3RD})
 if (UNIX)
     list(APPEND IMPLS ${IMPLS_OPENCV})
     list(APPEND DEPENDS ${DEPENDS_OPENCV})
 endif ()
 
+# 基础类库
 add_library(magdle STATIC ${IMPLS})
-add_library(sqlite_ext STATIC sqlite_json1.c)
 
+# 内嵌第三方类库
+add_library(3rd STATIC
+        3rd/sqlite_json1.c)
+
+# 编译引入目录
 include_directories(./)
 link_directories(./cmake-build-debug)
 
