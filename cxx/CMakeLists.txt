@@ -22,10 +22,8 @@ set(IMPLS
         imageinfo.h imageinfo.cpp
         similar.h similar.cpp
         faces.h faces.cpp
+        3rd/sqlite.cpp
         )
-
-# 内嵌第三方
-set(IMPLS_3RD 3rd/sqlite.cpp)
 
 # OPENCV实现
 set(IMPLS_OPENCV
@@ -44,7 +42,7 @@ set(IMPLS_MACOS
         faces_macos.h faces_macos.mm)
 
 # 链接库
-set(DEPENDS magdle 3rd sqlite3 jsoncpp)
+set(DEPENDS magdle sqlite3 jsoncpp)
 set(DEPENDS_OPENCV opencv_core opencv_imgcodecs opencv_imgproc)
 
 # 根据系统筛选编译文件
@@ -56,10 +54,6 @@ endif ()
 
 # 基础类库
 add_library(magdle STATIC ${IMPLS})
-
-# 内嵌第三方类库
-add_library(3rd STATIC
-        3rd/sqlite_json1.c)
 
 # 编译引入目录
 include_directories(./)
