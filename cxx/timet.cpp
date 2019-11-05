@@ -4,6 +4,10 @@
 
 ME_NAMESPACE_BEGIN
 
+Time::Time(magle::Timestamp ts) : _ts(ts) {
+    // pass
+}
+
 Timestamp Time::Now() {
     auto now = chrono::system_clock::now().time_since_epoch();
     return chrono::duration_cast<chrono::seconds>(now).count();

@@ -56,6 +56,7 @@ typedef ::std::filesystem::path path_type;
 typedef ::std::byte *bytes;
 typedef long long longlong;
 typedef unsigned long long ulonglong;
+typedef double real;
 
 ME_NAMESPACE_END
 

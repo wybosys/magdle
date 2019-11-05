@@ -11,11 +11,21 @@ class Time {
 
 public:
 
+    Time(Timestamp ts = 0);
+
     // 获得当前时间戳
     static Timestamp Now();
 
     // 当前时间
     static Seconds Current();
+
+    // 获得时间戳
+    inline Timestamp timestamp() const {
+        return _ts;
+    }
+
+private:
+    Timestamp _ts;
 };
 
 // 计时器
