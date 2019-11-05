@@ -19,6 +19,7 @@ set(IMPLS
         sqlite.cpp
         threadt.h threadt.cpp
         object.h object.cpp
+        imageinfo.h imageinfo.cpp
         similar.h similar.cpp
         faces.h faces.cpp
         )
