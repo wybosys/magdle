@@ -1,5 +1,5 @@
 #include "magdle.h"
-#include "3rd/sqlite.h"
+#include "sqlite.h"
 
 ME_NAMESPACE_BEGIN
 

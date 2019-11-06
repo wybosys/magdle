@@ -22,7 +22,7 @@ set(IMPLS
         imageinfo.h imageinfo.cpp
         similar.h similar.cpp
         faces.h faces.cpp
-        3rd/sqlite.cpp
+        sqlite.cpp
         )
 
 # OPENCV实现
