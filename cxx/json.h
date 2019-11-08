@@ -1,7 +1,7 @@
 #ifndef _ME_JSON_H
 #define _ME_JSON_H
 
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
 #include "variant.h"
 
 ME_NAMESPACE_BEGIN
