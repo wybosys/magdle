@@ -42,7 +42,8 @@ set(IMPLS_MACOS
         faces_macos.h faces_macos.mm)
 
 # 链接库
-set(DEPENDS magdle sqlite3 jsoncpp)
+set(DEPENDS_SYS dl pthread)
+set(DEPENDS magdle sqlite3 jsoncpp ${DEPENDS_SYS})
 set(DEPENDS_OPENCV opencv_core opencv_imgcodecs opencv_imgproc)
 
 # 根据系统筛选编译文件

@@ -1,3 +1,4 @@
 Makefile
 config.status
 sqlite3.pc
+libtool
