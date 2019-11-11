@@ -4,3 +4,4 @@ export PREFIX=`realpath .`
 
 source ./build-sqlite
 source ./build-jsoncpp
+source ./build-opencv
