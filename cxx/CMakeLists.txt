@@ -58,8 +58,8 @@ add_library(magdle STATIC ${IMPLS})
 
 # 编译引入目录
 include_directories(./)
-include_directories(3rd/include)
-link_directories(3rd/lib)
+include_directories(../3rd/include)
+link_directories(../3rd/lib)
 link_directories(./cmake-build-debug)
 
 # 相似图片过滤
