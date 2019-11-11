@@ -2,7 +2,7 @@
 
 import os, shutil, sys
 
-TGTS = ['perf', 'test', 'samples', 'java', 'python']
+TGTS = ['perf', 'test', 'samples', 'java', 'python', 'data']
 
 def clean(dir):    
     bn = os.path.basename(dir)
