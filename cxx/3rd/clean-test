@@ -2,7 +2,7 @@
 
 import os, shutil, sys
 
-TGTS = ['perf', 'test']
+TGTS = ['perf', 'test', 'samples', 'java', 'python']
 
 def clean(dir):    
     bn = os.path.basename(dir)
@@ -13,7 +13,7 @@ def clean(dir):
     for each in os.listdir(dir):
         c = dir + '/' + each
         if os.path.isdir(c):
-            clean(dir)
+            clean(c)
 
 if len(sys.argv) == 1:
     clean(os.getcwd())
