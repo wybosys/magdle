@@ -5,3 +5,4 @@ export PREFIX=`realpath .`
 ./build-sqlite
 ./build-jsoncpp
 ./build-opencv
+./build-jpeg

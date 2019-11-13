@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+PREFIX=`realpath .`
+
+cd jpeg-9c
+
+if [ ! -e build ]; then
+    mkdir build
+fi
+cd build
+../configure --prefix=$PREFIX --disable-shared
+make
+make install
