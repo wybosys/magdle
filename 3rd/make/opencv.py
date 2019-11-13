@@ -10,7 +10,7 @@ class Opencv(env.Library):
             os.mkdir('build')
         os.chdir('build')
         env.cmd(
-            env.CmdStr("cmake . .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DBUILD_JAVA=NO -DBUILD_TESTS=NO -DBUILD_PERF_TESTS=NO -DBUILD_opencv_python2=NO -DBUILD_opencv_python3=NO -DBUILD_opencv_apps=NO -DBUILD_DOCS=NO -DBUILD_opencv_data=NO -DBUILD_opencv_doc=NO")
+            env.CmdStr("cmake . .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DBUILD_JAVA=NO -DBUILD_TESTS=NO -DBUILD_PERF_TESTS=NO -DBUILD_opencv_python2=NO -DBUILD_opencv_python3=NO -DBUILD_opencv_apps=NO -DBUILD_DOCS=NO -DBUILD_opencv_data=NO -DBUILD_opencv_doc=NO -DWITH_EIGEN=NO")
             .test(not env.SHARED, "-DBUILD_SHARED_LIBS=NO")
         )
         env.cmd('make')
