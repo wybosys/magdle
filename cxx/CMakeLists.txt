@@ -44,7 +44,7 @@ set(IMPLS_MACOS
 # 链接库
 set(DEPENDS_SYS dl pthread)
 set(DEPENDS magdle sqlite3 jsoncpp ${DEPENDS_SYS})
-set(DEPENDS_OPENCV opencv_core opencv_imgcodecs opencv_imgproc jpeg)
+set(DEPENDS_OPENCV opencv_core opencv_imgcodecs opencv_imgproc jpeg tiff z)
 
 # 根据系统筛选编译文件
 list(APPEND IMPLS ${IMPLS_3RD})
