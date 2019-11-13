@@ -1,7 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-rm -rf include
-rm -rf bin
-rm -rf lib
-rm -rf share
+import env
+import shutil, os
 
+for e in ["include", "bin", "lib", "share"]:
+    if os.path.exists(e):
+        shutil.rmtree(e)

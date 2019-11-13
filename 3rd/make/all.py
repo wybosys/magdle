@@ -1,7 +1,3 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-export PREFIX=`realpath .`
-
-./build-sqlite
-./build-jsoncpp
-./build-opencv
+import env
