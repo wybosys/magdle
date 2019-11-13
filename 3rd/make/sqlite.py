@@ -1,11 +1,20 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-PREFIX=`realpath .`
+import env, os
 
-cd sqlite
-make clean
-./configure --prefix=$PREFIX --disable-shared --disable-static-shell --disable-dependency-tracking --enable-json1 --enable-fts5 --disable-fts4 --disable-fts3
-make install
-make clean
-cd -
+class Sqlite(env.Library):
+    def build(self):
+        env.Library.build(self)
+        os.chdir('sqlite')
+        env.cmd("make clean")
+        env.cmd(
+            env.CmdStr("./configure --prefix=$PREFIX --disable-static-shell --disable-dependency-tracking --enable-json1 --enable-fts5 --disable-fts4 --disable-fts3")
+            .test(env.SHARED, "--enable-shared --disable-static", "--disable-shared --enable-static"))
+        env.cmd("make install")
+        env.cmd("make clean")
+    def clean(self):
+        os.chdir('sqlite')        
+        env.cmd("make clean")
 
+if __name__ == "__main__":
+    Sqlite().build()
