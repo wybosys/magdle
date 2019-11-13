@@ -22,6 +22,7 @@ set(IMPLS
         imageinfo.h imageinfo.cpp
         similar.h similar.cpp
         faces.h faces.cpp
+        worker.h worker.cpp
         sqlite.cpp
         )
 
