@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, sys
+import os, sys, platform
 
 def detectDirectory():
     cwd = os.getcwd()
@@ -9,8 +9,18 @@ def detectDirectory():
         raise '工作目录错误，请进入3rd目录执行 ./make/xxx'
     return cwd
 
+def detectSystem():
+    sys = platform.system()
+    macos = sys == 'Darwin'
+    win = sys == 'Windows'
+    linux = sys == 'Linux'
+    return (macos, win, linux)
+
 def detectIsShared():
     return True
+
+# 判断系统类型
+(MACOS, WIN, LINUX) = detectSystem()
 
 # 编译目录
 PREFIX=detectDirectory()
