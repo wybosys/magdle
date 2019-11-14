@@ -6,36 +6,33 @@
 
 ME_NAMESPACE_BEGIN
 
+ME_CLASS_PREPARE(Worker);
+
 ME_CLASS_PREPARE(Workers);
 
 class Worker {
     ME_FRIEND(Workers);
+ME_CLASS_DECL(Worker);
 
 public:
 
-    virtual ~Worker() = default;
+    Worker();
 
-    // 执行一次
-    virtual void once() {}
+    virtual ~Worker();
 
     // 多次执行
-    virtual void loop() {}
+    virtual void main() {}
 
     // 执行次数
-    atomic_int count = -1;
+    atomic_int count = 1;
 
     // 隶属
-    inline Workers &owner() {
-        return *_owner;
-    }
+    Workers &owner();
 
 protected:
 
     // 启动
-    virtual void start() {}
-
-private:
-    Workers *_owner = nullptr;
+    virtual void start();
 };
 
 class Workers {
@@ -56,7 +53,7 @@ public:
     bool start(string const &name, worker_type::pointer);
 };
 
-#define ME_AUTOLOCK(mtx) lock_guard __al__##__LINE__(mtx);
+#define ME_AUTOLOCK(mtx) lock_guard _ME_COMBINE(__al__, __LINE__)(mtx);
 
 ME_NAMESPACE_END
 

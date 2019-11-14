@@ -40,6 +40,9 @@ _shared = new cls(); \
 return *_shared; \
 }
 
+#define __ME_COMBINE(L, R) L##R
+#define _ME_COMBINE(L, R) __ME_COMBINE(L, R)
+
 #define CXX17_INCLUDE(file) <experimental/file>
 #define CXX_INCLUDE(file) <file>
 

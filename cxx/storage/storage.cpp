@@ -6,12 +6,8 @@ int main() {
 
     class TestWorker : public Worker {
     public:
-        void once() override {
-            owner().env.logger.info("once");
-        }
-
-        void loop() override {
-            owner().env.logger.info("loop");
+        void main() override {
+            owner().env.logger.info("worker");
             Time::Sleep(1);
         }
     };
