@@ -16,7 +16,7 @@ struct WorkerPrivate {
 
     void main() {
         if (d_owner->count == -1) {
-            while (true) {
+            while (loop) {
                 d_owner->main();
             }
         } else {
@@ -26,6 +26,7 @@ struct WorkerPrivate {
         }
     }
 
+    bool loop = true;
     Worker *d_owner;
     mutex mtx;
     Workers *_owner = nullptr;
