@@ -6,6 +6,8 @@
 
 ME_NAMESPACE_BEGIN
 
+ME_CLASS_PREPARE(Workers);
+
 class Worker {
     ME_FRIEND(Workers);
 
@@ -22,23 +24,31 @@ public:
     // 执行次数
     atomic_int count = -1;
 
+    // 隶属
+    inline Workers &owner() {
+        return *_owner;
+    }
+
 protected:
 
     // 启动
     virtual void start();
-};
 
-ME_CLASS_PREPARE(Workers);
+private:
+    Workers *_owner = nullptr;
+};
 
 class Workers {
 ME_CLASS_DECL(Workers);
 
 protected:
-    Workers();
+    explicit Workers(Magdle &);
 
     ~Workers();
 
 public:
+
+    Magdle &env;
 
     typedef unique_ptr <Worker> worker_type;
 

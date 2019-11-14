@@ -4,12 +4,13 @@ ME_NAMESPACE_BEGIN
 
 Magdle::Magdle()
         : config(*this),
-          storage(*this) {
-
+          storage(*this),
+          workers(*this) {
+    // pass
 }
 
 Magdle::~Magdle() {
-
+    // pass
 }
 
 void Magdle::init() {
@@ -36,7 +37,7 @@ Project::Project(Magdle &env, string const &name)
 }
 
 void Project::clean() {
-    for (auto& iter: filesystem::directory_iterator(tmpDirectory)) {
+    for (auto &iter: filesystem::directory_iterator(tmpDirectory)) {
         filesystem::remove_all(iter);
     }
 }

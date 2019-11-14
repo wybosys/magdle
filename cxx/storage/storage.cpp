@@ -1,7 +1,20 @@
 #include "magdle.h"
+#include "app.h"
 
 int main() {
     using namespace magle;
+
+    class TestWorker : public Worker {
+    public:
+        void once() override {
+            owner().env.logger.info("once");
+        }
+
+        void loop() override {
+            owner().env.logger.info("loop");
+            Time::Sleep(1);
+        }
+    };
 
     Magdle env;
     env.init();
@@ -22,5 +35,7 @@ int main() {
     }
     env.logger.info(stringbuilder() << "耗时:" << cost.cost() << " 读取:" << cur->readed());
 
-    return 0;
+    env.workers.start("test", new TestWorker());
+
+    return CmdApp().exec();
 }

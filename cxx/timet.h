@@ -24,6 +24,9 @@ public:
         return _ts;
     }
 
+    // 暂停
+    static void Sleep(Seconds);
+
 private:
     Timestamp _ts;
 };
@@ -41,7 +44,7 @@ public:
 private:
 
     // 分时记录
-    vector<Seconds> _times;
+    vector <Seconds> _times;
 };
 
 ME_NAMESPACE_END

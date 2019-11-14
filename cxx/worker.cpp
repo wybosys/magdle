@@ -6,7 +6,7 @@
 ME_NAMESPACE_BEGIN
 
 void Worker::start() {
-
+    
 }
 
 struct WorkersPrivate {
@@ -15,7 +15,7 @@ struct WorkersPrivate {
     mutex mtx;
 };
 
-Workers::Workers() {
+Workers::Workers(Magdle &env) : env(env) {
     ME_CLASS_CONSTRUCT()
 }
 

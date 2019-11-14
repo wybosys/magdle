@@ -23,6 +23,7 @@ set(IMPLS
         faces.h faces.cpp
         worker.h worker.cpp
         sqlite.cpp
+        app.h app.cpp
         )
 
 # OPENCV实现

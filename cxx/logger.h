@@ -6,16 +6,16 @@ ME_NAMESPACE_BEGIN
 class Logger {
 public:
 
-    void info(string const &msg);
+    void info(string const &msg) const;
 
-    void warn(string const &msg);
+    void warn(string const &msg) const;
 
-    void log(string const &msg);
+    void log(string const &msg) const;
 
-    void fatal(string const &msg);
+    void fatal(string const &msg) const;
 
     template<typename T>
-    void ensure(T const &v, string const &msg) {
+    void ensure(T const &v, string const &msg) const {
         if (!v) {
             fatal(msg);
         }
