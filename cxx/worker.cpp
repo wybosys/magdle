@@ -5,12 +5,7 @@
 
 ME_NAMESPACE_BEGIN
 
-void Worker::start() {
-    
-}
-
 struct WorkersPrivate {
-    typedef Workers::worker_type worker_type;
     map<string, Workers::worker_type> workers;
     mutex mtx;
 };

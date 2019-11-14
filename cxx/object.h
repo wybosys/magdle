@@ -83,6 +83,27 @@ interface ISerialableObject {
     virtual bool unserialize(BinaryInput &) = 0;
 };
 
+template<typename FunT>
+class PointerAddress {
+public:
+    explicit PointerAddress(FunT f) : _mix(f) {}
+
+    inline pointer_address_value_type value() const {
+        return _mix.value;
+    }
+
+    inline void *pointer() {
+        return _mix;
+    }
+
+private:
+    union {
+        FunT fun;
+        pointer_address_value_type value;
+        void *ptr;
+    } _mix;
+};
+
 ME_NAMESPACE_END
 
 #endif

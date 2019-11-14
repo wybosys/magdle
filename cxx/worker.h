@@ -32,7 +32,7 @@ public:
 protected:
 
     // 启动
-    virtual void start();
+    virtual void start() {}
 
 private:
     Workers *_owner = nullptr;
@@ -48,9 +48,9 @@ protected:
 
 public:
 
-    Magdle &env;
-
     typedef unique_ptr <Worker> worker_type;
+
+    Magdle &env;
 
     // 启动
     bool start(string const &name, worker_type::pointer);

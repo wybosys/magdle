@@ -19,6 +19,7 @@ class ME_PRIVATECLASS(cls);
 
 #define ME_CLASS_DECL(cls) \
 protected: typedef ME_PRIVATECLASS(cls) private_class_type; \
+friend class ME_PRIVATECLASS(cls); \
 private_class_type *d_ptr = nullptr; \
 friend class Magdle; \
 private: ME_NOCOPY(cls);
@@ -57,6 +58,26 @@ typedef ::std::byte *bytes;
 typedef long long longlong;
 typedef unsigned long long ulonglong;
 typedef double real;
+
+template<int>
+struct pointer_detect {
+};
+template<>
+struct pointer_detect<4> {
+    enum {
+        size = 4
+    };
+    typedef ulong address_value_type;
+};
+template<>
+struct pointer_detect<8> {
+    enum {
+        size = 8
+    };
+    typedef ulonglong address_value_type;
+};
+
+typedef pointer_detect<sizeof(void *)>::address_value_type pointer_address_value_type;
 
 ME_NAMESPACE_END
 
