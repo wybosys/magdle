@@ -21,9 +21,7 @@ Seconds Time::Current() {
 }
 
 void Time::Sleep(Seconds s) {
-    chrono::milliseconds d;
-    d *= s * 1000;
-    this_thread::sleep_for(d);
+    this_thread::sleep_for(chrono::milliseconds(int(s) * 1000));
 }
 
 void TimeCost::start() {

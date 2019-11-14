@@ -6,7 +6,7 @@
 ME_NAMESPACE_BEGIN
 
 void RunWorker(Worker *worker) {
-
+    worker->main();
 }
 
 struct WorkerPrivate {
