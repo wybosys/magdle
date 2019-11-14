@@ -5,15 +5,25 @@
 
 ME_NAMESPACE_BEGIN
 
-void RunWorker(Worker *worker) {
-    worker->main();
-}
+void RunWorker(WorkerPrivate *d);
 
 struct WorkerPrivate {
     explicit WorkerPrivate(Worker *d_owner) :
             d_owner(d_owner),
-            t(RunWorker, d_owner) {
+            t(RunWorker, this) {
         // pass
+    }
+
+    void main() {
+        if (d_owner->count == -1) {
+            while (true) {
+                d_owner->main();
+            }
+        } else {
+            for (int i = 0; i < d_owner->count; ++i) {
+                d_owner->main();
+            }
+        }
     }
 
     Worker *d_owner;
@@ -21,6 +31,10 @@ struct WorkerPrivate {
     Workers *_owner = nullptr;
     thread t;
 };
+
+void RunWorker(WorkerPrivate *d) {
+    d->main();
+}
 
 Worker::Worker() {
     ME_CLASS_CONSTRUCT(this)
