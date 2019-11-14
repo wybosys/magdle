@@ -86,4 +86,16 @@ Variant &Variant::alloc(size_t s) {
     return *this;
 }
 
+string Variant::toString() const {
+    switch (this->_type) {
+        case VariantType::INTEGER:
+            return stringbuilder() << *((int *) _raw);
+        case VariantType::STRING:
+            return string((char const *) _raw, _length);
+        default:
+            break;
+    }
+    return "";
+}
+
 ME_NAMESPACE_END

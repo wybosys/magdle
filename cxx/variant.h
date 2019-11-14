@@ -75,7 +75,7 @@ public:
     }
 
     inline operator string() const {
-        return string((char const *) _raw, _length);
+        return toString();
     }
 
     inline operator JsonObj() const {
@@ -86,6 +86,8 @@ public:
     inline bool operator==(R const &v) const {
         return (R) (*this) == v;
     }
+
+    string toString() const;
 
 protected:
 

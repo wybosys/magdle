@@ -7,12 +7,12 @@ int main() {
     env.init();
 
     auto c = env.storage.kv("test");
-    c->set("abc", 123);
+    c->set("123", 123);
     c->insert("time", stringbuilder() << Time::Now());
-    env.logger.ensure(c->get("abc") == 123, "abc != 123");
+    env.logger.ensure(c->get("123") == 123, "123 != 123");
 
     auto doc = env.storage.document("nosql");
-    doc->insert(JsonObj()("abc", 123));
+    doc->insert(JsonObj()("123", 123));
 
     TimeCost cost;
     cost.start();

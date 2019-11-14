@@ -6,6 +6,7 @@
 #include "storage.h"
 #include "logger.h"
 #include "json.h"
+#include "worker.h"
 
 ME_NAMESPACE_BEGIN
 
@@ -27,6 +28,9 @@ public:
 
     // 输出日志
     Logger logger;
+
+    // 子工作
+    Workers workers;
 };
 
 // 用于实现包含的各种识别项目

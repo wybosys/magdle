@@ -205,7 +205,7 @@ Variant CollectionKeyValues::get(std::string const &key) {
 
 CollectionKeyValues::cursor_type CollectionKeyValues::cursor(string const &key) {
     stringbuilder ss;
-    ss << "select key,val from " << scheme;
+    ss << "select key,val,typ from " << scheme;
     if (key != CollectionCursor::KEY_ALL) {
         ss << " where key='" << key << "'";
     }
