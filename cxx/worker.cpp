@@ -5,22 +5,25 @@
 
 ME_NAMESPACE_BEGIN
 
-void DoMain() {
+void RunWorker(Worker *worker) {
 
 }
 
 struct WorkerPrivate {
-    WorkerPrivate() : t(DoMain) {
+    explicit WorkerPrivate(Worker *d_owner) :
+            d_owner(d_owner),
+            t(RunWorker, d_owner) {
         // pass
     }
 
+    Worker *d_owner;
     mutex mtx;
     Workers *_owner = nullptr;
     thread t;
 };
 
 Worker::Worker() {
-    ME_CLASS_CONSTRUCT()
+    ME_CLASS_CONSTRUCT(this)
 }
 
 Worker::~Worker() {

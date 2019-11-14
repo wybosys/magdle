@@ -43,7 +43,7 @@ set(IMPLS_MACOS
         faces_macos.h faces_macos.mm)
 
 # 链接库
-set(DEPENDS_SYS dl)
+set(DEPENDS_SYS dl pthread)
 set(DEPENDS magdle sqlite3 jsoncpp ${DEPENDS_SYS})
 set(DEPENDS_OPENCV opencv_core opencv_imgcodecs opencv_imgproc jpeg tiff z)
 
