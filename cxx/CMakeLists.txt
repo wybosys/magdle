@@ -16,7 +16,6 @@ set(IMPLS
         json.cpp json.h
         variant.cpp variant.h
         timet.cpp timet.h
-        threadt.h threadt.cpp
         object.h object.cpp
         linear.h linear.cpp
         imageinfo.h imageinfo.cpp

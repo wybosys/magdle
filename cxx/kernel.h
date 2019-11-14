@@ -61,7 +61,6 @@ typedef double real;
 ME_NAMESPACE_END
 
 #include "object.h"
-#include "threadt.h"
 #include "stringt.h"
 #include "variant.h"
 #include "timet.h"
