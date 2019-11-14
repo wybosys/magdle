@@ -9,6 +9,7 @@ int main() {
         TestWorker() {
             this->count = -1;
         }
+
         void main() override {
             owner().env.logger.info("worker");
             Time::Sleep(1);
