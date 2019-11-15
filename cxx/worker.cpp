@@ -9,8 +9,7 @@ void RunWorker(WorkerPrivate *d);
 
 struct WorkerPrivate {
     explicit WorkerPrivate(Worker *d_owner) :
-            d_owner(d_owner),
-            t(RunWorker, this) {
+            d_owner(d_owner) {
         // pass
     }
 
@@ -30,7 +29,7 @@ struct WorkerPrivate {
     Worker *d_owner;
     mutex mtx;
     Workers *_owner = nullptr;
-    thread t;
+    shared_ptr<thread> t;
 };
 
 void RunWorker(WorkerPrivate *d) {
@@ -46,7 +45,7 @@ Worker::~Worker() {
 }
 
 void Worker::start() {
-
+    d_ptr->t.reset(new thread(RunWorker, d_ptr));
 }
 
 Workers &Worker::owner() {
